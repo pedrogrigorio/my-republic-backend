@@ -4,8 +4,8 @@ interface UserProps {
   name: string;
   email: string;
   password: string;
-  imgSrc: string;
   genre: Genre;
+  imgSrc?: string;
 }
 
 export class User {

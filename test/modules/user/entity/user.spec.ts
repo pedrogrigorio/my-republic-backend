@@ -1,5 +1,5 @@
 import { Genre } from '@src/core/enums/genre';
-import { User } from './user';
+import { User } from '@src/modules/user/domain/entities/user';
 
 describe('User', () => {
   it('should be able to create a user', () => {
