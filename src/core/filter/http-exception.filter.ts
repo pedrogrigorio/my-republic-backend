@@ -7,6 +7,9 @@ import {
   HttpStatus,
   HttpException,
 } from '@nestjs/common';
+import { InvalidPasswordException } from '@src/modules/user/domain/exceptions/invalid-password.exception';
+import { InvalidGenreException } from '@src/modules/user/domain/exceptions/invalid-genre.exception';
+import { InvalidEmailException } from '@src/modules/user/domain/exceptions/invalid-email.exception';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -19,6 +22,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     if (exception instanceof EmailAlreadyExistsException) {
       status = HttpStatus.CONFLICT;
+      message = exception.message;
+    } else if (exception instanceof InvalidPasswordException) {
+      status = HttpStatus.BAD_REQUEST;
+      message = exception.message;
+    } else if (exception instanceof InvalidGenreException) {
+      status = HttpStatus.BAD_REQUEST;
+      message = exception.message;
+    } else if (exception instanceof InvalidEmailException) {
+      status = HttpStatus.BAD_REQUEST;
       message = exception.message;
     } else if (exception instanceof HttpException) {
       status = exception.getStatus();

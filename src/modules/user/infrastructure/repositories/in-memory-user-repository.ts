@@ -36,6 +36,5 @@ export class InMemoryUserRepository implements UserRepository {
     );
 
     this.users.push(userWithId);
-    console.log(this.users);
   }
 }
