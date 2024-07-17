@@ -4,6 +4,8 @@ import { CreateUserUseCase } from '../application/use-cases/create-user.usecase'
 import { CreateUserDto } from '../application/dtos/create-user.dto';
 import { UpdateEmailDto } from '../application/dtos/update-email.dto';
 import { UpdateEmailUseCase } from '../application/use-cases/update-email.usecase';
+import { updatePasswordDto } from '../application/dtos/update-password.dto';
+import { UpdatePasswordUseCase } from '../application/use-cases/update-password.usecase';
 
 @Controller('users')
 export class UserController {
@@ -11,6 +13,7 @@ export class UserController {
     private createUserUseCase: CreateUserUseCase,
     private getAllUsersUseCase: GetAllUsersUseCase,
     private updateEmailUseCase: UpdateEmailUseCase,
+    private updatePasswordUseCase: UpdatePasswordUseCase,
   ) {}
 
   @Get()
@@ -31,11 +34,16 @@ export class UserController {
   ) {
     const id = parseInt(userId);
 
-    const updatedUser = await this.updateEmailUseCase.execute(
-      updateEmailDto,
-      id,
-    );
+    await this.updateEmailUseCase.execute(updateEmailDto, id);
+  }
 
-    return updatedUser;
+  @Patch(':id/update-password')
+  async updatePassword(
+    @Body() updatePasswordDto: updatePasswordDto,
+    @Param('id') userId: string,
+  ) {
+    const id = parseInt(userId);
+
+    await this.updatePasswordUseCase.execute(updatePasswordDto, id);
   }
 }

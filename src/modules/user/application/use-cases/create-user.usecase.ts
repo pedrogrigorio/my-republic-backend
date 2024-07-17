@@ -4,13 +4,12 @@ import { UserRepository } from '../repositories/user.repository';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { Injectable } from '@nestjs/common';
 import { UserMapper } from '../mappers/user.mapper';
-import { UserResponseDto } from '../dtos/user-response.dto';
 
 @Injectable()
 export class CreateUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(createUserDto: CreateUserDto): Promise<UserResponseDto> {
+  async execute(createUserDto: CreateUserDto): Promise<void> {
     if (createUserDto.password !== createUserDto.passwordConfirm) {
       throw new PasswordNotMatchException('Passwords do not match');
     }
@@ -25,8 +24,6 @@ export class CreateUserUseCase {
       );
     }
 
-    const createdUser = await this.userRepository.create(user);
-
-    return UserMapper.toDto(createdUser);
+    await this.userRepository.create(user);
   }
 }

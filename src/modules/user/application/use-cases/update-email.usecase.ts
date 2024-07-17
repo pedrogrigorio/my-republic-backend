@@ -1,19 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { UserResponseDto } from '../dtos/user-response.dto';
+import { EmailAlreadyExistsException } from '../../domain/exceptions/email-already-exists.exception';
+import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
 import { UserRepository } from '../repositories/user.repository';
 import { UpdateEmailDto } from '../dtos/update-email.dto';
-import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
-import { UserMapper } from '../mappers/user.mapper';
-import { EmailAlreadyExistsException } from '../../domain/exceptions/email-already-exists.exception';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UpdateEmailUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(
-    updateEmailDto: UpdateEmailDto,
-    userId: number,
-  ): Promise<UserResponseDto> {
+  async execute(updateEmailDto: UpdateEmailDto, userId: number): Promise<void> {
     const { newEmail } = updateEmailDto;
 
     const user = await this.userRepository.findById(userId);
@@ -33,7 +28,5 @@ export class UpdateEmailUseCase {
     user.email = newEmail;
 
     await this.userRepository.update(user);
-
-    return UserMapper.toDto(user);
   }
 }

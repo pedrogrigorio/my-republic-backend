@@ -6,7 +6,7 @@ import { CreateUserUseCase } from '@src/modules/user/application/use-cases/creat
 import { UserFactory } from '@test/factories/user.factory';
 
 describe('Update Email Use Case', () => {
-  it('should be able to update the email of an existent user', async () => {
+  it('should be able to update the email of an existing user', async () => {
     const userRepository = new InMemoryUserRepository();
     const createUser = new CreateUserUseCase(userRepository);
     const updateEmail = new UpdateEmailUseCase(userRepository);
