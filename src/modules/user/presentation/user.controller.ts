@@ -6,12 +6,15 @@ import { UpdateEmailDto } from '../application/dtos/update-email.dto';
 import { UpdateEmailUseCase } from '../application/use-cases/update-email.usecase';
 import { updatePasswordDto } from '../application/dtos/update-password.dto';
 import { UpdatePasswordUseCase } from '../application/use-cases/update-password.usecase';
+import { UpdateNameDto } from '../application/dtos/update-name.dto';
+import { UpdateNameUseCase } from '../application/use-cases/update-name.usecase';
 
 @Controller('users')
 export class UserController {
   constructor(
     private createUserUseCase: CreateUserUseCase,
     private getAllUsersUseCase: GetAllUsersUseCase,
+    private updateNameUseCase: UpdateNameUseCase,
     private updateEmailUseCase: UpdateEmailUseCase,
     private updatePasswordUseCase: UpdatePasswordUseCase,
   ) {}
@@ -25,6 +28,16 @@ export class UserController {
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto) {
     await this.createUserUseCase.execute(createUserDto);
+  }
+
+  @Patch(':id/update-name')
+  async updateName(
+    @Body() updateNameDto: UpdateNameDto,
+    @Param('id') userId: string,
+  ) {
+    const id = parseInt(userId);
+
+    await this.updateNameUseCase.execute(updateNameDto, id);
   }
 
   @Patch(':id/update-email')
