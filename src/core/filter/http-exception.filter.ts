@@ -10,6 +10,7 @@ import {
 import { InvalidPasswordException } from '@src/modules/user/domain/exceptions/invalid-password.exception';
 import { InvalidGenreException } from '@src/modules/user/domain/exceptions/invalid-genre.exception';
 import { InvalidEmailException } from '@src/modules/user/domain/exceptions/invalid-email.exception';
+import { PasswordNotMatchException } from '@src/modules/user/domain/exceptions/password-not-match.exception';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -30,6 +31,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
       status = HttpStatus.BAD_REQUEST;
       message = exception.message;
     } else if (exception instanceof InvalidEmailException) {
+      status = HttpStatus.BAD_REQUEST;
+      message = exception.message;
+    } else if (exception instanceof PasswordNotMatchException) {
       status = HttpStatus.BAD_REQUEST;
       message = exception.message;
     } else if (exception instanceof HttpException) {
