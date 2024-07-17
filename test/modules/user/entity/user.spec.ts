@@ -5,24 +5,24 @@ import { Genre } from '@src/core/enums/genre';
 
 describe('User Entity', () => {
   it('should be able to create a user', () => {
-    const user = UserFactory.createUser();
+    const user = UserFactory.makeEntity();
 
     expect(user).toBeTruthy;
   });
 
   it('should not create a user with invalid email', () => {
-    expect(() => UserFactory.createUser({ email: 'invalid-email' })).toThrow(
+    expect(() => UserFactory.makeEntity({ email: 'invalid-email' })).toThrow(
       InvalidEmailException,
     );
   });
 
   it('should not create a user with invalid password', () => {
     expect(() =>
-      UserFactory.createUser({ password: 'invalidpassword' }),
+      UserFactory.makeEntity({ password: 'invalidpassword' }),
     ).toThrow(InvalidPasswordException);
   });
 
   it('should not create a user with invalid genre', () => {
-    expect(() => UserFactory.createUser({ genre: 2 as Genre })).toThrow();
+    expect(() => UserFactory.makeEntity({ genre: 2 as Genre })).toThrow();
   });
 });

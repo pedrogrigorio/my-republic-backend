@@ -1,18 +1,13 @@
 import { CreateUserUseCase } from '@src/modules/user/application/use-cases/create-user.usecase';
 import { InMemoryUserRepository } from '@src/modules/user/infrastructure/repositories/in-memory-user-repository';
+import { UserFactory } from '@test/factories/user.factory';
 
-describe('Create user', () => {
+describe('Create User Use Case', () => {
   it('should be able to create a new user', async () => {
     const userRepository = new InMemoryUserRepository();
     const createUser = new CreateUserUseCase(userRepository);
 
-    await createUser.execute({
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      password: 'securePassword123!@#',
-      imgSrc: 'https://example.com/images/johndoe.jpg',
-      genre: 0,
-    });
+    await createUser.execute(UserFactory.makeCreateUserDto());
 
     expect(userRepository.users).toHaveLength(1);
 

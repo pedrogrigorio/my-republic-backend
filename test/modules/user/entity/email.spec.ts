@@ -3,13 +3,13 @@ import { UserFactory } from '@test/factories/user.factory';
 
 describe('Email', () => {
   it('should be able to create a user with a valid email', () => {
-    const user = UserFactory.createUser({ email: 'valid.email@example.com' });
+    const user = UserFactory.makeEntity({ email: 'valid.email@example.com' });
 
     expect(user).toBeTruthy();
   });
 
   it('should not be able to create a user with an invalid email', () => {
-    expect(() => UserFactory.createUser({ email: 'invalid-email' })).toThrow(
+    expect(() => UserFactory.makeEntity({ email: 'invalid-email' })).toThrow(
       InvalidEmailException,
     );
   });
