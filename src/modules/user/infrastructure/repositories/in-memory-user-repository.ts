@@ -13,7 +13,7 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   async findById(id: number): Promise<User> {
-    const user = this.users.filter((user) => user.id === id)[0];
+    const user = this.users.find((user) => user.id === id);
     return user;
   }
 
@@ -22,7 +22,7 @@ export class InMemoryUserRepository implements UserRepository {
     return user;
   }
 
-  async create(user: User): Promise<void> {
+  async create(user: User): Promise<User> {
     const id = this.users.length;
     const userWithId = new User(
       {
@@ -36,5 +36,15 @@ export class InMemoryUserRepository implements UserRepository {
     );
 
     this.users.push(userWithId);
+
+    return userWithId;
+  }
+
+  async update(user: User): Promise<User> {
+    const index = this.users.findIndex((item) => item.id === user.id);
+
+    this.users[index] = user;
+
+    return user;
   }
 }

@@ -4,6 +4,7 @@ import { CreateUserUseCase } from './application/use-cases/create-user.usecase';
 import { UserController } from './presentation/user.controller';
 import { UserRepository } from './application/repositories/user.repository';
 import { Module } from '@nestjs/common';
+import { UpdateEmailUseCase } from './application/use-cases/update-email.usecase';
 
 @Module({
   imports: [],
@@ -11,6 +12,7 @@ import { Module } from '@nestjs/common';
   providers: [
     CreateUserUseCase,
     GetAllUsersUseCase,
+    UpdateEmailUseCase,
     {
       provide: UserRepository,
       useClass: InMemoryUserRepository,

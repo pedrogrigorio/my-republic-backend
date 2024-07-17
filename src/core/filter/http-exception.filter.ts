@@ -1,4 +1,8 @@
 import { EmailAlreadyExistsException } from 'src/modules/user/domain/exceptions/email-already-exists.exception';
+import { PasswordNotMatchException } from '@src/modules/user/domain/exceptions/password-not-match.exception';
+import { InvalidPasswordException } from '@src/modules/user/domain/exceptions/invalid-password.exception';
+import { InvalidGenreException } from '@src/modules/user/domain/exceptions/invalid-genre.exception';
+import { InvalidEmailException } from '@src/modules/user/domain/exceptions/invalid-email.exception';
 import { Response } from 'express';
 import {
   ExceptionFilter,
@@ -7,10 +11,7 @@ import {
   HttpStatus,
   HttpException,
 } from '@nestjs/common';
-import { InvalidPasswordException } from '@src/modules/user/domain/exceptions/invalid-password.exception';
-import { InvalidGenreException } from '@src/modules/user/domain/exceptions/invalid-genre.exception';
-import { InvalidEmailException } from '@src/modules/user/domain/exceptions/invalid-email.exception';
-import { PasswordNotMatchException } from '@src/modules/user/domain/exceptions/password-not-match.exception';
+import { UserNotFoundException } from '@src/modules/user/domain/exceptions/user-not-found.exception';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -35,6 +36,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message = exception.message;
     } else if (exception instanceof PasswordNotMatchException) {
       status = HttpStatus.BAD_REQUEST;
+      message = exception.message;
+    } else if (exception instanceof UserNotFoundException) {
+      status = HttpStatus.NOT_FOUND;
       message = exception.message;
     } else if (exception instanceof HttpException) {
       status = exception.getStatus();

@@ -2,6 +2,7 @@ import { InvalidPasswordException } from '@src/modules/user/domain/exceptions/in
 import { InvalidEmailException } from '@src/modules/user/domain/exceptions/invalid-email.exception';
 import { UserFactory } from '@test/factories/user.factory';
 import { Genre } from '@src/core/enums/genre';
+import { InvalidGenreException } from '@src/modules/user/domain/exceptions/invalid-genre.exception';
 
 describe('User Entity', () => {
   it('should be able to create a user', () => {
@@ -23,6 +24,8 @@ describe('User Entity', () => {
   });
 
   it('should not create a user with invalid genre', () => {
-    expect(() => UserFactory.makeEntity({ genre: 2 as Genre })).toThrow();
+    expect(() => UserFactory.makeEntity({ genre: 2 as Genre })).toThrow(
+      InvalidGenreException,
+    );
   });
 });

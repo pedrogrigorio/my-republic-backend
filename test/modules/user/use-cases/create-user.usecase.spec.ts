@@ -1,6 +1,8 @@
-import { CreateUserUseCase } from '@src/modules/user/application/use-cases/create-user.usecase';
 import { InMemoryUserRepository } from '@src/modules/user/infrastructure/repositories/in-memory-user-repository';
+import { CreateUserUseCase } from '@src/modules/user/application/use-cases/create-user.usecase';
 import { UserFactory } from '@test/factories/user.factory';
+import { PasswordNotMatchException } from '@src/modules/user/domain/exceptions/password-not-match.exception';
+import { EmailAlreadyExistsException } from '@src/modules/user/domain/exceptions/email-already-exists.exception';
 
 describe('Create User Use Case', () => {
   it('should be able to create a new user', async () => {
@@ -41,7 +43,7 @@ describe('Create User Use Case', () => {
           email: 'example@email.com',
         }),
       ),
-    ).rejects.toThrow();
+    ).rejects.toThrow(EmailAlreadyExistsException);
   });
 
   it('should not be able to create a new user when password and confirmPassword do not match', async () => {
@@ -53,6 +55,8 @@ describe('Create User Use Case', () => {
       passwordConfirm: 'differentPassword123!@#',
     });
 
-    await expect(createUser.execute(createUserDto)).rejects.toThrow();
+    await expect(createUser.execute(createUserDto)).rejects.toThrow(
+      PasswordNotMatchException,
+    );
   });
 });

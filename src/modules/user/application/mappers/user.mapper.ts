@@ -1,6 +1,6 @@
-import { User } from '../../domain/entities/user';
-import { CreateUserDto } from '../dtos/create-user.dto';
 import { UserResponseDto } from '../dtos/user-response.dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
+import { User } from '../../domain/entities/user';
 
 export class UserMapper {
   static toDto(user: User): UserResponseDto {

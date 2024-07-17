@@ -1,5 +1,5 @@
-import { GetAllUsersUseCase } from '@src/modules/user/application/use-cases/get-all-users.usecase';
 import { InMemoryUserRepository } from '@src/modules/user/infrastructure/repositories/in-memory-user-repository';
+import { GetAllUsersUseCase } from '@src/modules/user/application/use-cases/get-all-users.usecase';
 import { UserFactory } from '@test/factories/user.factory';
 
 describe('Get All Users Use Case', () => {

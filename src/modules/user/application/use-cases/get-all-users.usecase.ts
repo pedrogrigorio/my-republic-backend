@@ -1,7 +1,7 @@
+import { UserResponseDto } from '../dtos/user-response.dto';
 import { UserRepository } from '../repositories/user.repository';
 import { Injectable } from '@nestjs/common';
 import { UserMapper } from '../mappers/user.mapper';
-import { UserResponseDto } from '../dtos/user-response.dto';
 
 @Injectable()
 export class GetAllUsersUseCase {
