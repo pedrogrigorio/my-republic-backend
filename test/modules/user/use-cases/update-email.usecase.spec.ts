@@ -2,27 +2,27 @@ import { EmailAlreadyExistsException } from '@src/modules/user/domain/exceptions
 import { InMemoryUserRepository } from '@src/modules/user/infrastructure/repositories/in-memory-user-repository';
 import { UserNotFoundException } from '@src/modules/user/domain/exceptions/user-not-found.exception';
 import { UpdateEmailUseCase } from '@src/modules/user/application/use-cases/update-email.usecase';
-import { CreateUserUseCase } from '@src/modules/user/application/use-cases/create-user.usecase';
 import { UserFactory } from '@test/factories/user.factory';
 
 describe('Update Email Use Case', () => {
   it('should be able to update the email of an existing user', async () => {
     const userRepository = new InMemoryUserRepository();
-    const createUser = new CreateUserUseCase(userRepository);
     const updateEmail = new UpdateEmailUseCase(userRepository);
 
-    const userDto = UserFactory.makeCreateUserDto({
+    const user = UserFactory.makeEntity({
       email: 'test@example.com',
     });
 
-    const newUser = await createUser.execute(userDto);
+    await userRepository.create(user);
 
-    const updatedUser = await updateEmail.execute(
+    await updateEmail.execute(
       {
         newEmail: 'john.doe@email.com',
       },
-      newUser.id,
+      user.id,
     );
+
+    const updatedUser = await userRepository.findById(user.id);
 
     expect(updatedUser).toBeTruthy();
     expect(updatedUser.email).toBe('john.doe@email.com');
@@ -39,17 +39,16 @@ describe('Update Email Use Case', () => {
 
   it('should not be able to update the email to an email already registered', async () => {
     const userRepository = new InMemoryUserRepository();
-    const createUser = new CreateUserUseCase(userRepository);
     const updateEmail = new UpdateEmailUseCase(userRepository);
 
-    await createUser.execute(
-      UserFactory.makeCreateUserDto({
+    await userRepository.create(
+      UserFactory.makeEntity({
         email: 'john.doe@example.com',
       }),
     );
 
-    const userToBeUpdated = await createUser.execute(
-      UserFactory.makeCreateUserDto({
+    const userToBeUpdated = await userRepository.create(
+      UserFactory.makeEntity({
         email: 'test@example.com',
       }),
     );
