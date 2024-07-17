@@ -9,11 +9,11 @@ describe('Update Email Use Case', () => {
     const userRepository = new InMemoryUserRepository();
     const updateEmail = new UpdateEmailUseCase(userRepository);
 
-    const user = UserFactory.makeEntity({
-      email: 'test@example.com',
-    });
-
-    await userRepository.create(user);
+    const user = await userRepository.create(
+      UserFactory.makeEntity({
+        email: 'test@example.com',
+      }),
+    );
 
     await updateEmail.execute(
       {
