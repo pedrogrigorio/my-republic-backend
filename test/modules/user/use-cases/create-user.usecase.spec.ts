@@ -21,4 +21,38 @@ describe('Create User Use Case', () => {
     expect(createdUser.imgSrc).toBe('https://example.com/images/johndoe.jpg');
     expect(createdUser.genre).toBe(0);
   });
+
+  it('should not be able to create a new user with an already registered email', async () => {
+    const userRepository = new InMemoryUserRepository();
+    const createUser = new CreateUserUseCase(userRepository);
+
+    await createUser.execute(UserFactory.makeCreateUserDto());
+
+    await createUser.execute(
+      UserFactory.makeCreateUserDto({
+        email: 'example@email.com',
+      }),
+    );
+
+    await expect(
+      createUser.execute(
+        UserFactory.makeCreateUserDto({
+          name: 'AnotherJohnDoe',
+          email: 'example@email.com',
+        }),
+      ),
+    ).rejects.toThrow();
+  });
+
+  it('should not be able to create a new user when password and confirmPassword do not match', async () => {
+    const userRepository = new InMemoryUserRepository();
+    const createUser = new CreateUserUseCase(userRepository);
+
+    const createUserDto = UserFactory.makeCreateUserDto({
+      password: 'strongPassword123!@#',
+      passwordConfirm: 'differentPassword123!@#',
+    });
+
+    await expect(createUser.execute(createUserDto)).rejects.toThrow();
+  });
 });
