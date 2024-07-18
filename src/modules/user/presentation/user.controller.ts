@@ -21,6 +21,7 @@ import { UpdateNameUseCase } from '../application/use-cases/update-name.usecase'
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { UpdatePhotoUseCase } from '../application/use-cases/update-photo.usecase';
 
 @Controller('users')
 export class UserController {
@@ -30,6 +31,7 @@ export class UserController {
     private updateNameUseCase: UpdateNameUseCase,
     private updateEmailUseCase: UpdateEmailUseCase,
     private updatePasswordUseCase: UpdatePasswordUseCase,
+    private updatePhotoUseCase: UpdatePhotoUseCase,
   ) {}
 
   @Get()
@@ -102,6 +104,11 @@ export class UserController {
 
     const id = parseInt(userId);
 
-    console.log(file);
+    const updatedUser = await this.updatePhotoUseCase.execute(
+      file.filename,
+      id,
+    );
+
+    return updatedUser;
   }
 }

@@ -19,7 +19,6 @@ export class UserMapper {
       email: userDto.email,
       password: userDto.password,
       genre: userDto.genre,
-      imgSrc: userDto.imgSrc,
     });
   }
 }

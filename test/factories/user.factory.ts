@@ -20,7 +20,6 @@ export class UserFactory {
       email: 'john.doe@example.com',
       password: 'securePassword123!@#',
       passwordConfirm: 'securePassword123!@#',
-      imgSrc: 'https://example.com/images/johndoe.jpg',
       genre: 0,
     };
 

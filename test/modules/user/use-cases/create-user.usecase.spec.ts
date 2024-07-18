@@ -20,7 +20,6 @@ describe('Create User Use Case', () => {
     expect(createdUser).toBeDefined();
     expect(createdUser.name).toBe('John Doe');
     expect(createdUser.email).toBe('john.doe@example.com');
-    expect(createdUser.imgSrc).toBe('https://example.com/images/johndoe.jpg');
     expect(createdUser.genre).toBe(0);
   });
 

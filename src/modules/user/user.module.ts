@@ -7,6 +7,7 @@ import { UpdateNameUseCase } from './application/use-cases/update-name.usecase';
 import { UserController } from './presentation/user.controller';
 import { UserRepository } from './application/repositories/user.repository';
 import { Module } from '@nestjs/common';
+import { UpdatePhotoUseCase } from './application/use-cases/update-photo.usecase';
 
 @Module({
   imports: [],
@@ -17,6 +18,7 @@ import { Module } from '@nestjs/common';
     UpdateNameUseCase,
     UpdateEmailUseCase,
     UpdatePasswordUseCase,
+    UpdatePhotoUseCase,
     {
       provide: UserRepository,
       useClass: InMemoryUserRepository,

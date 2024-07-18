@@ -25,6 +25,4 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsIn([Genre.MALE, Genre.FEMALE])
   genre: Genre;
-
-  imgSrc: string;
 }
