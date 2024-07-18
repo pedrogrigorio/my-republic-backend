@@ -10,6 +10,7 @@ import { UserController } from './presentation/user.controller';
 import { UserRepository } from './application/interfaces/user.repository.interface';
 import { StorageService } from './application/interfaces/storage.service.interface';
 import { Module } from '@nestjs/common';
+import { DeleteUserUseCase } from './application/use-cases/delete-user.usecase';
 
 @Module({
   imports: [],
@@ -21,6 +22,7 @@ import { Module } from '@nestjs/common';
     UpdateEmailUseCase,
     UpdatePasswordUseCase,
     UpdatePhotoUseCase,
+    DeleteUserUseCase,
     {
       provide: UserRepository,
       useClass: InMemoryUserRepository,

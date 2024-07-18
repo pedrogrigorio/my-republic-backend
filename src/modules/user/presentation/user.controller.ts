@@ -4,6 +4,7 @@ import { UpdateEmailUseCase } from '../application/use-cases/update-email.usecas
 import { GetAllUsersUseCase } from '../application/use-cases/get-all-users.usecase';
 import { CreateUserUseCase } from '../application/use-cases/create-user.usecase';
 import { UpdateNameUseCase } from '../application/use-cases/update-name.usecase';
+import { DeleteUserUseCase } from '../application/use-cases/delete-user.usecase';
 import { updatePasswordDto } from '../application/dtos/update-password.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateEmailDto } from '../application/dtos/update-email.dto';
@@ -13,6 +14,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   Get,
   Param,
@@ -32,6 +34,7 @@ export class UserController {
     private updateEmailUseCase: UpdateEmailUseCase,
     private updatePasswordUseCase: UpdatePasswordUseCase,
     private updatePhotoUseCase: UpdatePhotoUseCase,
+    private deleteUserUseCase: DeleteUserUseCase,
   ) {}
 
   @Get()
@@ -96,5 +99,12 @@ export class UserController {
     const updatedUser = await this.updatePhotoUseCase.execute(file, id);
 
     return updatedUser;
+  }
+
+  @Delete(':id')
+  async deleteUser(@Param('id') userId: string) {
+    const id = parseInt(userId);
+
+    await this.deleteUserUseCase.execute(id);
   }
 }
