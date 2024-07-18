@@ -2,7 +2,7 @@ import { PasswordNotMatchException } from '../../domain/exceptions/password-not-
 import { InvalidPasswordException } from '../../domain/exceptions/invalid-password.exception';
 import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
 import { updatePasswordDto } from '../dtos/update-password.dto';
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../interfaces/user.repository.interface';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

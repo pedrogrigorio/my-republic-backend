@@ -1,6 +1,6 @@
 import { EmailAlreadyExistsException } from '../../domain/exceptions/email-already-exists.exception';
 import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../interfaces/user.repository.interface';
 import { UpdateEmailDto } from '../dtos/update-email.dto';
 import { Injectable } from '@nestjs/common';
 

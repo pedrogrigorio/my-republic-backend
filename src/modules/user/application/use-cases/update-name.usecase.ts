@@ -1,5 +1,5 @@
 import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../interfaces/user.repository.interface';
 import { UpdateNameDto } from '../dtos/update-name.dto';
 import { Injectable } from '@nestjs/common';
 

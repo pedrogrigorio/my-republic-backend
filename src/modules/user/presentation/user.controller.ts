@@ -1,27 +1,27 @@
+import { UpdatePasswordUseCase } from '../application/use-cases/update-password.usecase';
+import { UpdatePhotoUseCase } from '../application/use-cases/update-photo.usecase';
+import { UpdateEmailUseCase } from '../application/use-cases/update-email.usecase';
+import { GetAllUsersUseCase } from '../application/use-cases/get-all-users.usecase';
+import { CreateUserUseCase } from '../application/use-cases/create-user.usecase';
+import { UpdateNameUseCase } from '../application/use-cases/update-name.usecase';
+import { updatePasswordDto } from '../application/dtos/update-password.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UpdateEmailDto } from '../application/dtos/update-email.dto';
+import { CreateUserDto } from '../application/dtos/create-user.dto';
+import { UpdateNameDto } from '../application/dtos/update-name.dto';
 import {
   BadRequestException,
   Body,
   Controller,
+  FileTypeValidator,
   Get,
   Param,
+  ParseFilePipe,
   Patch,
   Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { GetAllUsersUseCase } from '../application/use-cases/get-all-users.usecase';
-import { CreateUserUseCase } from '../application/use-cases/create-user.usecase';
-import { CreateUserDto } from '../application/dtos/create-user.dto';
-import { UpdateEmailDto } from '../application/dtos/update-email.dto';
-import { UpdateEmailUseCase } from '../application/use-cases/update-email.usecase';
-import { updatePasswordDto } from '../application/dtos/update-password.dto';
-import { UpdatePasswordUseCase } from '../application/use-cases/update-password.usecase';
-import { UpdateNameDto } from '../application/dtos/update-name.dto';
-import { UpdateNameUseCase } from '../application/use-cases/update-name.usecase';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-import { UpdatePhotoUseCase } from '../application/use-cases/update-photo.usecase';
 
 @Controller('users')
 export class UserController {
@@ -76,38 +76,24 @@ export class UserController {
   }
 
   @Patch(':id/update-photo')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          const fileExtName = extname(file.originalname);
-          const newFileName = Date.now() + fileExtName;
-          callback(null, newFileName);
+  @UseInterceptors(FileInterceptor('file'))
+  async updatePhoto(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: /\/(jpg|jpeg|png)$/ })],
+        exceptionFactory: () => {
+          return new BadRequestException(
+            'File must be an image of type jpg, jpeg, or png',
+          );
         },
       }),
-      fileFilter: (req, file, callback) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-          return callback(null, false);
-        }
-        callback(null, true);
-      },
-    }),
-  )
-  async updatePhoto(
-    @UploadedFile() file: Express.Multer.File,
+    )
+    file: Express.Multer.File,
     @Param('id') userId: string,
   ) {
-    if (!file) {
-      throw new BadRequestException('File is not a image');
-    }
-
     const id = parseInt(userId);
 
-    const updatedUser = await this.updatePhotoUseCase.execute(
-      file.filename,
-      id,
-    );
+    const updatedUser = await this.updatePhotoUseCase.execute(file, id);
 
     return updatedUser;
   }

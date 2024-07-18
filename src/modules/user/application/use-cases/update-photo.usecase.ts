@@ -1,23 +1,34 @@
-import { Injectable } from '@nestjs/common';
 import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
 import { UserResponseDto } from '../dtos/user-response.dto';
+import { UserRepository } from '../interfaces/user.repository.interface';
+import { StorageService } from '../interfaces/storage.service.interface';
 import { UserMapper } from '../mappers/user.mapper';
-import { UserRepository } from '../repositories/user.repository';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UpdatePhotoUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private storageService: StorageService,
+  ) {}
 
-  async execute(filename: string, userId: number): Promise<UserResponseDto> {
-    const imgUrl = 'http://localhost:3000/pictures/' + filename;
-
+  async execute(
+    file: Express.Multer.File,
+    userId: number,
+  ): Promise<UserResponseDto> {
     const user = await this.userRepository.findById(userId);
 
     if (!user) {
       throw new UserNotFoundException(`User with id ${userId} not found`);
     }
 
-    user.imgSrc = imgUrl;
+    if (user.imgSrc) {
+      await this.storageService.deleteFile(user.imgSrc);
+    }
+
+    const imgSrc = await this.storageService.upload(file);
+
+    user.imgSrc = imgSrc;
 
     const updatedUser = await this.userRepository.update(user);
 

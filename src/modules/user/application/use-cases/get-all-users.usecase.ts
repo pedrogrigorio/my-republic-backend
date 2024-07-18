@@ -1,5 +1,5 @@
 import { UserResponseDto } from '../dtos/user-response.dto';
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../interfaces/user.repository.interface';
 import { Injectable } from '@nestjs/common';
 import { UserMapper } from '../mappers/user.mapper';
 
