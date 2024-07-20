@@ -8,8 +8,8 @@ export class PrismaUserMapper {
       name: user.name,
       email: user.email,
       password: user.password,
-      imgSrc: user.imgSrc,
       genre: user.genre,
+      imgSrc: user.imgSrc,
     };
   }
 

@@ -1,3 +1,8 @@
+# prisma
+/prisma/migrations
+/prisma/dev.db
+
+# local files uploaded
 /uploads/*
 
 # compiled output
