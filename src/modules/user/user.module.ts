@@ -1,6 +1,5 @@
 import { InMemoryUserRepository } from './infrastructure/repositories/in-memory-user-repository';
 import { UpdatePasswordUseCase } from './application/use-cases/update-password.usecase';
-import { LocalStorageService } from '@src/core/storage/local-storage.service';
 import { UpdateEmailUseCase } from './application/use-cases/update-email.usecase';
 import { GetAllUsersUseCase } from './application/use-cases/get-all-users.usecase';
 import { UpdatePhotoUseCase } from './application/use-cases/update-photo.usecase';
@@ -11,6 +10,7 @@ import { UserRepository } from './application/interfaces/user.repository.interfa
 import { StorageService } from './application/interfaces/storage.service.interface';
 import { Module } from '@nestjs/common';
 import { DeleteUserUseCase } from './application/use-cases/delete-user.usecase';
+import { S3StorageService } from '@src/core/storage/s3-storage.service';
 
 @Module({
   imports: [],
@@ -29,7 +29,7 @@ import { DeleteUserUseCase } from './application/use-cases/delete-user.usecase';
     },
     {
       provide: StorageService,
-      useClass: LocalStorageService,
+      useClass: S3StorageService,
     },
   ],
 })
