@@ -1,6 +1,6 @@
-export class UnauthorizedException extends Error {
+export class AuthException extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'UnauthorizedException';
+    this.name = 'AuthException';
   }
 }

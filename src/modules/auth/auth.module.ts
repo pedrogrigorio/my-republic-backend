@@ -4,10 +4,20 @@ import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './infrastrucutre/strategies/local.strategy';
 import { UserModule } from '../user/user.module';
 import { ValidateUserUseCase } from './application/use-cases/validate-user.use-case';
+import { LoginUseCase } from './application/use-cases/login-use-case';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './infrastrucutre/strategies/jwt.strategy';
 
 @Module({
-  imports: [UserModule, PassportModule],
+  imports: [
+    UserModule,
+    PassportModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '60s' },
+    }),
+  ],
   controllers: [AuthController],
-  providers: [LocalStrategy, ValidateUserUseCase],
+  providers: [LocalStrategy, JwtStrategy, ValidateUserUseCase, LoginUseCase],
 })
 export class AuthModule {}
