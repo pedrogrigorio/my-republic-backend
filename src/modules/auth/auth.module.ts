@@ -7,6 +7,8 @@ import { ValidateUserUseCase } from './application/use-cases/validate-user.use-c
 import { LoginUseCase } from './application/use-cases/login-use-case';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './infrastrucutre/strategies/jwt.strategy';
+import { TokenService } from './application/interfaces/token.service.interface';
+import { JwtTokenService } from './infrastrucutre/services/jwt-token-service';
 
 @Module({
   imports: [
@@ -18,6 +20,15 @@ import { JwtStrategy } from './infrastrucutre/strategies/jwt.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [LocalStrategy, JwtStrategy, ValidateUserUseCase, LoginUseCase],
+  providers: [
+    LocalStrategy,
+    JwtStrategy,
+    ValidateUserUseCase,
+    LoginUseCase,
+    {
+      provide: TokenService,
+      useClass: JwtTokenService,
+    },
+  ],
 })
 export class AuthModule {}
