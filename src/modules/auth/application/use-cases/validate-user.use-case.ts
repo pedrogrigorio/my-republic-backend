@@ -1,6 +1,6 @@
 import { GetUserByEmailUseCase } from '@src/modules/user/application/use-cases/get-user-by-email.usecase';
 import { AuthUserMapper } from '../mappers/auth-user.mapper';
-import { AuthException } from '../../domain/exceptions/unauthorized.exception';
+import { AuthException } from '../../domain/exceptions/auth.exception';
 import { AuthUserDto } from '../dtos/auth-user.dto';
 import { Injectable } from '@nestjs/common';
 import { LoginDto } from '../dtos/login.dto';
