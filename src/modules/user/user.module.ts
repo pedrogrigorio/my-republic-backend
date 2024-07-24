@@ -1,17 +1,19 @@
 import { UpdatePasswordUseCase } from './application/use-cases/update-password.usecase';
+import { GetUserByEmailUseCase } from './application/use-cases/get-user-by-email.usecase';
 import { PrismaUserRepository } from './infrastructure/repositories/prisma-user-repository';
 import { UpdateEmailUseCase } from './application/use-cases/update-email.usecase';
 import { GetAllUsersUseCase } from './application/use-cases/get-all-users.usecase';
 import { UpdatePhotoUseCase } from './application/use-cases/update-photo.usecase';
+import { GetUserByIdUseCase } from './application/use-cases/get-user-by-id.usecase';
 import { CreateUserUseCase } from './application/use-cases/create-user.usecase';
 import { UpdateNameUseCase } from './application/use-cases/update-name.usecase';
 import { DeleteUserUseCase } from './application/use-cases/delete-user.usecase';
+import { S3StorageService } from '@src/core/storage/s3-storage.service';
 import { UserController } from './presentation/user.controller';
 import { UserRepository } from './application/interfaces/user.repository.interface';
 import { StorageService } from './application/interfaces/storage.service.interface';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { Module } from '@nestjs/common';
-import { S3StorageService } from '@src/core/storage/s3-storage.service';
 
 @Module({
   imports: [],
@@ -19,6 +21,8 @@ import { S3StorageService } from '@src/core/storage/s3-storage.service';
   providers: [
     CreateUserUseCase,
     GetAllUsersUseCase,
+    GetUserByIdUseCase,
+    GetUserByEmailUseCase,
     UpdateNameUseCase,
     UpdateEmailUseCase,
     UpdatePasswordUseCase,
@@ -34,5 +38,6 @@ import { S3StorageService } from '@src/core/storage/s3-storage.service';
       useClass: S3StorageService,
     },
   ],
+  exports: [GetUserByEmailUseCase],
 })
 export class UserModule {}

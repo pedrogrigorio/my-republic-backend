@@ -12,17 +12,17 @@ import { CreateUserDto } from '../application/dtos/create-user.dto';
 import { UpdateNameDto } from '../application/dtos/update-name.dto';
 import {
   BadRequestException,
-  Body,
+  FileTypeValidator,
+  UseInterceptors,
+  ParseFilePipe,
+  UploadedFile,
   Controller,
   Delete,
-  FileTypeValidator,
-  Get,
   Param,
-  ParseFilePipe,
   Patch,
+  Body,
   Post,
-  UploadedFile,
-  UseInterceptors,
+  Get,
 } from '@nestjs/common';
 
 @Controller('users')

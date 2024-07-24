@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { UserMapper } from '../mappers/user.mapper';
 
 @Injectable()
-export class GetUserById {
+export class GetUserByIdUseCase {
   constructor(private userRepository: UserRepository) {}
 
   async execute(userId: number): Promise<UserResponseDto> {

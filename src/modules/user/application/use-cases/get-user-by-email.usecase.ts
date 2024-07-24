@@ -1,20 +1,18 @@
-import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
-import { UserResponseDto } from '../dtos/user-response.dto';
 import { UserRepository } from '../interfaces/user.repository.interface';
 import { Injectable } from '@nestjs/common';
-import { UserMapper } from '../mappers/user.mapper';
+import { User } from '../../domain/entities/user';
 
 @Injectable()
-export class GetUserByEmail {
+export class GetUserByEmailUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(email: string): Promise<UserResponseDto> {
+  async execute(email: string): Promise<User> {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      throw new UserNotFoundException(`User with email ${email} not found`);
+      return null;
     }
 
-    return UserMapper.toDto(user);
+    return user;
   }
 }
