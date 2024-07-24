@@ -1,4 +1,4 @@
-import { CreateUserDto } from '@src/modules/user/application/dtos/create-user.dto';
+import { SignUpDto } from '@src/modules/user/application/dtos/sign-up.dto';
 import { User } from '@src/modules/user/domain/entities/user';
 
 export class UserFactory {
@@ -14,7 +14,7 @@ export class UserFactory {
     return new User({ ...defaultUser, ...overrides });
   }
 
-  static makeCreateUserDto(overrides?: Partial<CreateUserDto>) {
+  static makeSignUpDto(overrides?: Partial<SignUpDto>) {
     const defaultDto = {
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -23,6 +23,6 @@ export class UserFactory {
       genre: 0,
     };
 
-    return { ...defaultDto, ...overrides } as CreateUserDto;
+    return { ...defaultDto, ...overrides } as SignUpDto;
   }
 }

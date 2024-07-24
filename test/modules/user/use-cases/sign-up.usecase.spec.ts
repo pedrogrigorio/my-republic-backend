@@ -1,7 +1,7 @@
 import { EmailAlreadyExistsException } from '@src/modules/user/domain/exceptions/email-already-exists.exception';
 import { PasswordNotMatchException } from '@src/modules/user/domain/exceptions/password-not-match.exception';
 import { InMemoryUserRepository } from '@src/modules/user/infrastructure/repositories/in-memory-user-repository';
-import { SignUpUseCase } from '@src/modules/user/application/use-cases/create-user.usecase';
+import { SignUpUseCase } from '@src/modules/user/application/use-cases/sign-up.usecase';
 import { UserFactory } from '@test/factories/user.factory';
 
 describe('Sign Up Use Case', () => {
@@ -9,7 +9,7 @@ describe('Sign Up Use Case', () => {
     const userRepository = new InMemoryUserRepository();
     const createUser = new SignUpUseCase(userRepository);
 
-    await createUser.execute(UserFactory.makeCreateUserDto());
+    await createUser.execute(UserFactory.makeSignUpDto());
 
     expect(userRepository.users).toHaveLength(1);
 
@@ -27,17 +27,17 @@ describe('Sign Up Use Case', () => {
     const userRepository = new InMemoryUserRepository();
     const createUser = new SignUpUseCase(userRepository);
 
-    await createUser.execute(UserFactory.makeCreateUserDto());
+    await createUser.execute(UserFactory.makeSignUpDto());
 
     await createUser.execute(
-      UserFactory.makeCreateUserDto({
+      UserFactory.makeSignUpDto({
         email: 'example@email.com',
       }),
     );
 
     await expect(
       createUser.execute(
-        UserFactory.makeCreateUserDto({
+        UserFactory.makeSignUpDto({
           name: 'AnotherJohnDoe',
           email: 'example@email.com',
         }),
@@ -49,7 +49,7 @@ describe('Sign Up Use Case', () => {
     const userRepository = new InMemoryUserRepository();
     const createUser = new SignUpUseCase(userRepository);
 
-    const createUserDto = UserFactory.makeCreateUserDto({
+    const createUserDto = UserFactory.makeSignUpDto({
       password: 'strongPassword123!@#',
       passwordConfirm: 'differentPassword123!@#',
     });
