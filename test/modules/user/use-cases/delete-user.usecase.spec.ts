@@ -1,7 +1,7 @@
+import { InMemoryUserRepository } from '@src/modules/user/infrastructure/repositories/in-memory-user-repository';
+import { UserNotFoundException } from '@src/modules/user/domain/exceptions/user-not-found.exception';
 import { LocalStorageService } from '@src/core/storage/local-storage.service';
 import { DeleteUserUseCase } from '@src/modules/user/application/use-cases/delete-user.usecase';
-import { UserNotFoundException } from '@src/modules/user/domain/exceptions/user-not-found.exception';
-import { InMemoryUserRepository } from '@src/modules/user/infrastructure/repositories/in-memory-user-repository';
 import { UserFactory } from '@test/factories/user.factory';
 
 describe('Delete User Use Case', () => {
