@@ -1,7 +1,7 @@
 import { IsEmail, IsIn, IsNotEmpty, IsStrongPassword } from 'class-validator';
 import { Genre } from 'src/core/enums/genre';
 
-export class CreateUserDto {
+export class SignUpDto {
   @IsNotEmpty()
   name: string;
 

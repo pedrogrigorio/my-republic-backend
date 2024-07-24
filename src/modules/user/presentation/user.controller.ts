@@ -2,14 +2,14 @@ import { UpdatePasswordUseCase } from '../application/use-cases/update-password.
 import { UpdatePhotoUseCase } from '../application/use-cases/update-photo.usecase';
 import { UpdateEmailUseCase } from '../application/use-cases/update-email.usecase';
 import { GetAllUsersUseCase } from '../application/use-cases/get-all-users.usecase';
-import { CreateUserUseCase } from '../application/use-cases/create-user.usecase';
 import { UpdateNameUseCase } from '../application/use-cases/update-name.usecase';
 import { DeleteUserUseCase } from '../application/use-cases/delete-user.usecase';
 import { updatePasswordDto } from '../application/dtos/update-password.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateEmailDto } from '../application/dtos/update-email.dto';
-import { CreateUserDto } from '../application/dtos/create-user.dto';
+import { SignUpUseCase } from '../application/use-cases/sign-up.usecase';
 import { UpdateNameDto } from '../application/dtos/update-name.dto';
+import { SignUpDto } from '../application/dtos/sign-up.dto';
 import {
   BadRequestException,
   FileTypeValidator,
@@ -28,7 +28,7 @@ import {
 @Controller('users')
 export class UserController {
   constructor(
-    private createUserUseCase: CreateUserUseCase,
+    private signUpUseCase: SignUpUseCase,
     private getAllUsersUseCase: GetAllUsersUseCase,
     private updateNameUseCase: UpdateNameUseCase,
     private updateEmailUseCase: UpdateEmailUseCase,
@@ -44,8 +44,8 @@ export class UserController {
   }
 
   @Post()
-  async createUser(@Body() createUserDto: CreateUserDto) {
-    await this.createUserUseCase.execute(createUserDto);
+  async createUser(@Body() signUpDto: SignUpDto) {
+    await this.signUpUseCase.execute(signUpDto);
   }
 
   @Patch(':id/update-name')

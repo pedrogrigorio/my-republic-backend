@@ -1,5 +1,5 @@
 import { UserResponseDto } from '../dtos/user-response.dto';
-import { CreateUserDto } from '../dtos/create-user.dto';
+import { SignUpDto } from '../dtos/sign-up.dto';
 import { User } from '../../domain/entities/user';
 
 export class UserMapper {
@@ -13,7 +13,7 @@ export class UserMapper {
     };
   }
 
-  static fromCreateUserDto(userDto: CreateUserDto): User {
+  static fromSignUpDto(userDto: SignUpDto): User {
     return new User({
       name: userDto.name,
       email: userDto.email,

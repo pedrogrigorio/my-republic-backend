@@ -1,13 +1,13 @@
-import { InMemoryUserRepository } from '@src/modules/user/infrastructure/repositories/in-memory-user-repository';
-import { CreateUserUseCase } from '@src/modules/user/application/use-cases/create-user.usecase';
-import { UserFactory } from '@test/factories/user.factory';
-import { PasswordNotMatchException } from '@src/modules/user/domain/exceptions/password-not-match.exception';
 import { EmailAlreadyExistsException } from '@src/modules/user/domain/exceptions/email-already-exists.exception';
+import { PasswordNotMatchException } from '@src/modules/user/domain/exceptions/password-not-match.exception';
+import { InMemoryUserRepository } from '@src/modules/user/infrastructure/repositories/in-memory-user-repository';
+import { SignUpUseCase } from '@src/modules/user/application/use-cases/create-user.usecase';
+import { UserFactory } from '@test/factories/user.factory';
 
-describe('Create User Use Case', () => {
+describe('Sign Up Use Case', () => {
   it('should be able to create a new user', async () => {
     const userRepository = new InMemoryUserRepository();
-    const createUser = new CreateUserUseCase(userRepository);
+    const createUser = new SignUpUseCase(userRepository);
 
     await createUser.execute(UserFactory.makeCreateUserDto());
 
@@ -25,7 +25,7 @@ describe('Create User Use Case', () => {
 
   it('should not be able to create a new user with an already registered email', async () => {
     const userRepository = new InMemoryUserRepository();
-    const createUser = new CreateUserUseCase(userRepository);
+    const createUser = new SignUpUseCase(userRepository);
 
     await createUser.execute(UserFactory.makeCreateUserDto());
 
@@ -47,7 +47,7 @@ describe('Create User Use Case', () => {
 
   it('should not be able to create a new user when password and confirmPassword do not match', async () => {
     const userRepository = new InMemoryUserRepository();
-    const createUser = new CreateUserUseCase(userRepository);
+    const createUser = new SignUpUseCase(userRepository);
 
     const createUserDto = UserFactory.makeCreateUserDto({
       password: 'strongPassword123!@#',

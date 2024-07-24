@@ -1,20 +1,20 @@
 import { EmailAlreadyExistsException } from '../../domain/exceptions/email-already-exists.exception';
 import { PasswordNotMatchException } from '../../domain/exceptions/password-not-match.exception';
 import { UserRepository } from '../interfaces/user.repository.interface';
-import { CreateUserDto } from '../dtos/create-user.dto';
 import { Injectable } from '@nestjs/common';
 import { UserMapper } from '../mappers/user.mapper';
+import { SignUpDto } from '../dtos/sign-up.dto';
 
 @Injectable()
-export class CreateUserUseCase {
+export class SignUpUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(createUserDto: CreateUserDto): Promise<void> {
-    if (createUserDto.password !== createUserDto.passwordConfirm) {
+  async execute(signUpDto: SignUpDto): Promise<void> {
+    if (signUpDto.password !== signUpDto.passwordConfirm) {
       throw new PasswordNotMatchException('Passwords do not match');
     }
 
-    const user = UserMapper.fromCreateUserDto(createUserDto);
+    const user = UserMapper.fromSignUpDto(signUpDto);
 
     const existingUser = await this.userRepository.findByEmail(user.email);
 
