@@ -3,11 +3,13 @@ import { PasswordNotMatchException } from '@src/modules/user/domain/exceptions/p
 import { InMemoryUserRepository } from '@src/modules/user/infrastructure/repositories/in-memory-user-repository';
 import { SignUpUseCase } from '@src/modules/user/application/use-cases/sign-up.usecase';
 import { UserFactory } from '@test/factories/user.factory';
+import { BCryptHashingService } from '@src/core/services/hashing/bcrypt-hashing.service';
 
 describe('Sign Up Use Case', () => {
   it('should be able to create a new user', async () => {
     const userRepository = new InMemoryUserRepository();
-    const createUser = new SignUpUseCase(userRepository);
+    const hashingService = new BCryptHashingService();
+    const createUser = new SignUpUseCase(userRepository, hashingService);
 
     await createUser.execute(UserFactory.makeSignUpDto());
 
@@ -25,7 +27,8 @@ describe('Sign Up Use Case', () => {
 
   it('should not be able to create a new user with an already registered email', async () => {
     const userRepository = new InMemoryUserRepository();
-    const createUser = new SignUpUseCase(userRepository);
+    const hashingService = new BCryptHashingService();
+    const createUser = new SignUpUseCase(userRepository, hashingService);
 
     await createUser.execute(UserFactory.makeSignUpDto());
 
@@ -47,7 +50,8 @@ describe('Sign Up Use Case', () => {
 
   it('should not be able to create a new user when password and confirmPassword do not match', async () => {
     const userRepository = new InMemoryUserRepository();
-    const createUser = new SignUpUseCase(userRepository);
+    const hashingService = new BCryptHashingService();
+    const createUser = new SignUpUseCase(userRepository, hashingService);
 
     const createUserDto = UserFactory.makeSignUpDto({
       password: 'strongPassword123!@#',

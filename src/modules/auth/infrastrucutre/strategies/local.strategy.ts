@@ -1,4 +1,4 @@
-import { ValidateUserUseCase } from '../../application/use-cases/validate-user.use-case';
+import { ValidateUserUseCase } from '../../application/use-cases/validate-user.usecase';
 import { PassportStrategy } from '@nestjs/passport';
 import { AuthUserDto } from '../../application/dtos/auth-user.dto';
 import { Injectable } from '@nestjs/common';

@@ -1,4 +1,5 @@
 import { GetUserByEmailUseCase } from '@src/modules/user/application/use-cases/get-user-by-email.usecase';
+import { HashingService } from '@src/core/services/hashing/hashing.service.interface';
 import { AuthUserMapper } from '../mappers/auth-user.mapper';
 import { AuthException } from '../../domain/exceptions/auth.exception';
 import { AuthUserDto } from '../dtos/auth-user.dto';
@@ -7,7 +8,10 @@ import { LoginDto } from '../dtos/login.dto';
 
 @Injectable()
 export class ValidateUserUseCase {
-  constructor(private getUserByEmailUseCase: GetUserByEmailUseCase) {}
+  constructor(
+    private getUserByEmailUseCase: GetUserByEmailUseCase,
+    private hashingService: HashingService,
+  ) {}
 
   async execute(loginDto: LoginDto): Promise<AuthUserDto> {
     const { email, password } = loginDto;
@@ -15,7 +19,10 @@ export class ValidateUserUseCase {
     const user = await this.getUserByEmailUseCase.execute(email);
 
     if (user) {
-      const isPasswordValid = password === user.password;
+      const isPasswordValid = await this.hashingService.compare(
+        password,
+        user.password,
+      );
 
       if (isPasswordValid) {
         return AuthUserMapper.toDto(user);

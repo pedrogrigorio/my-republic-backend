@@ -1,4 +1,4 @@
-import { StorageService } from '@src/modules/user/application/interfaces/storage.service.interface';
+import { StorageService } from './storage.service.interface';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 import {

@@ -1,4 +1,3 @@
-import { InvalidPasswordException } from '../exceptions/invalid-password.exception';
 import { InvalidGenreException } from '../exceptions/invalid-genre.exception';
 import { InvalidEmailException } from '../exceptions/invalid-email.exception';
 import { Genre } from 'src/core/enums/genre';
@@ -18,7 +17,6 @@ export class User {
   constructor(props: UserProps, id?: number) {
     this.validateGenre(props.genre);
     this.validateEmail(props.email);
-    this.validatePassword(props.password);
 
     this._id = id;
     this.props = props;
@@ -35,15 +33,6 @@ export class User {
 
     if (!regex.test(email)) {
       throw new InvalidEmailException('Invalid email');
-    }
-  }
-
-  private validatePassword(value: string) {
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
-
-    if (!regex.test(value)) {
-      throw new InvalidPasswordException('Invalid password');
     }
   }
 
@@ -73,7 +62,6 @@ export class User {
   }
 
   public set password(password: string) {
-    this.validatePassword(password);
     this.props.password = password;
   }
 

@@ -1,4 +1,4 @@
-import { StorageService } from '@src/modules/user/application/interfaces/storage.service.interface';
+import { StorageService } from './storage.service.interface';
 import * as path from 'path';
 import * as fs from 'fs';
 

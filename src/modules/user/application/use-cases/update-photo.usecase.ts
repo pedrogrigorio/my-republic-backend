@@ -1,7 +1,7 @@
 import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
 import { UserResponseDto } from '../dtos/user-response.dto';
 import { UserRepository } from '../interfaces/user.repository.interface';
-import { StorageService } from '../interfaces/storage.service.interface';
+import { StorageService } from '../../../../core/services/storage/storage.service.interface';
 import { UserMapper } from '../mappers/user.mapper';
 import { Injectable } from '@nestjs/common';
 

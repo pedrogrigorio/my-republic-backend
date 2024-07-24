@@ -24,6 +24,7 @@ import {
   Post,
   Get,
 } from '@nestjs/common';
+import { isPublic } from '@src/modules/auth/presentation/decorators/is-public.decorator';
 
 @Controller('users')
 export class UserController {
@@ -43,8 +44,9 @@ export class UserController {
     return users;
   }
 
+  @isPublic()
   @Post()
-  async createUser(@Body() signUpDto: SignUpDto) {
+  async signUp(@Body() signUpDto: SignUpDto) {
     await this.signUpUseCase.execute(signUpDto);
   }
 

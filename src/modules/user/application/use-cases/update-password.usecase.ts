@@ -4,10 +4,14 @@ import { UserNotFoundException } from '../../domain/exceptions/user-not-found.ex
 import { updatePasswordDto } from '../dtos/update-password.dto';
 import { UserRepository } from '../interfaces/user.repository.interface';
 import { Injectable } from '@nestjs/common';
+import { HashingService } from '@src/core/services/hashing/hashing.service.interface';
 
 @Injectable()
 export class UpdatePasswordUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private hashingService: HashingService,
+  ) {}
 
   async execute(
     updatePasswordDto: updatePasswordDto,
@@ -25,11 +29,16 @@ export class UpdatePasswordUseCase {
       throw new UserNotFoundException(`User with id ${userId} not found`);
     }
 
-    if (user.password !== oldPassword) {
+    const oldPasswordIsValid = await this.hashingService.compare(
+      oldPassword,
+      user.password,
+    );
+
+    if (!oldPasswordIsValid) {
       throw new InvalidPasswordException('Old password is invalid');
     }
 
-    user.password = newPassword;
+    user.password = await this.hashingService.hash(newPassword, 10);
 
     await this.userRepository.update(user);
   }

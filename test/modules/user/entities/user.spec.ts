@@ -1,8 +1,7 @@
-import { InvalidPasswordException } from '@src/modules/user/domain/exceptions/invalid-password.exception';
 import { InvalidEmailException } from '@src/modules/user/domain/exceptions/invalid-email.exception';
+import { InvalidGenreException } from '@src/modules/user/domain/exceptions/invalid-genre.exception';
 import { UserFactory } from '@test/factories/user.factory';
 import { Genre } from '@src/core/enums/genre';
-import { InvalidGenreException } from '@src/modules/user/domain/exceptions/invalid-genre.exception';
 
 describe('User Entity', () => {
   it('should be able to create a user', () => {
@@ -15,12 +14,6 @@ describe('User Entity', () => {
     expect(() => UserFactory.makeEntity({ email: 'invalid-email' })).toThrow(
       InvalidEmailException,
     );
-  });
-
-  it('should not create a user with invalid password', () => {
-    expect(() =>
-      UserFactory.makeEntity({ password: 'invalidpassword' }),
-    ).toThrow(InvalidPasswordException);
   });
 
   it('should not create a user with invalid genre', () => {
