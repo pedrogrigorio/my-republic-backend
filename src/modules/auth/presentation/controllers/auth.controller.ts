@@ -1,8 +1,8 @@
 import { LocalAuthGuard } from '../../infrastrucutre/guards/local-auth.guard';
 import { LoginUseCase } from '../../application/use-cases/login.usecase';
-import { CurrentUser } from '../decorators/current-user.decorator';
 import { AuthUserDto } from '../../application/dtos/auth-user.dto';
-import { isPublic } from '../decorators/is-public.decorator';
+import { CurrentUser } from '@src/core/decorators/current-user.decorator';
+import { isPublic } from '@src/core/decorators/is-public.decorator';
 import {
   Controller,
   HttpStatus,
