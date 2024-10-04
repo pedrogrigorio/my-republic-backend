@@ -1,5 +1,5 @@
+import { Gender } from '@src/core/enums/gender';
 import { IsEmail, IsIn, IsNotEmpty, IsStrongPassword } from 'class-validator';
-import { Genre } from 'src/core/enums/genre';
 
 export class SignUpDto {
   @IsNotEmpty()
@@ -23,6 +23,6 @@ export class SignUpDto {
   passwordConfirm: string;
 
   @IsNotEmpty()
-  @IsIn([Genre.MALE, Genre.FEMALE])
-  genre: Genre;
+  @IsIn([Gender.MALE, Gender.FEMALE])
+  gender: Gender;
 }

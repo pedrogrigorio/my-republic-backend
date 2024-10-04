@@ -1,12 +1,12 @@
-import { InvalidGenreException } from '../exceptions/invalid-genre.exception';
+import { InvalidGenderException } from '../exceptions/invalid-gender.exception';
 import { InvalidEmailException } from '../exceptions/invalid-email.exception';
-import { Genre } from 'src/core/enums/genre';
+import { Gender } from '@src/core/enums/gender';
 
 interface UserProps {
   name: string;
   email: string;
   password: string;
-  genre: Genre;
+  gender: Gender;
   imgSrc?: string;
 }
 
@@ -15,16 +15,16 @@ export class User {
   private props: UserProps;
 
   constructor(props: UserProps, id?: number) {
-    this.validateGenre(props.genre);
+    this.validateGender(props.gender);
     this.validateEmail(props.email);
 
     this._id = id;
     this.props = props;
   }
 
-  private validateGenre(genre: Genre) {
-    if (genre !== 0 && genre !== 1) {
-      throw new InvalidGenreException('Invalid genre');
+  private validateGender(gender: Gender) {
+    if (gender !== 'MALE' && gender !== 'FEMALE') {
+      throw new InvalidGenderException('Invalid gender');
     }
   }
 
@@ -73,12 +73,12 @@ export class User {
     this.props.imgSrc = imgSrc;
   }
 
-  public get genre() {
-    return this.props.genre;
+  public get gender() {
+    return this.props.gender;
   }
 
-  public set genre(genre: Genre) {
-    this.validateGenre(genre);
-    this.props.genre = genre;
+  public set gender(gender: Gender) {
+    this.validateGender(gender);
+    this.props.gender = gender;
   }
 }

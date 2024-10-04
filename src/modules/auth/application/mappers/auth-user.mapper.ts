@@ -7,7 +7,7 @@ export class AuthUserMapper {
       id: user.id,
       name: user.name,
       email: user.email,
-      genre: user.genre,
+      gender: user.gender,
       imgSrc: user.imgSrc,
     };
   }

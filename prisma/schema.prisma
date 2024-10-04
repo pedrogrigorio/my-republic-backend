@@ -12,8 +12,48 @@ model User {
   name     String
   email    String  @unique
   password String
-  genre    Int
+  gender   String
   imgSrc   String? @map("img_src")
 
+  advertisements Advertisement[]
+
   @@map("users")
+}
+
+model Advertisement {
+  id                  Int     @id @default(autoincrement())
+  title               String
+  description         String
+  price               Float
+  genderPreference    String
+  allowOppositeGender Boolean
+  totalSlots          Int
+  occupiedSlots       Int
+  bedroomType         String
+  numBedroom          Int
+  numBathroom         Int
+  hasPet              Boolean
+
+  ownerId Int?
+  stateId Int
+  cityId  Int
+  owner   User? @relation(fields: [ownerId], references: [id])
+  state   State @relation(fields: [stateId], references: [id])
+  city    City  @relation(fields: [cityId], references: [id])
+}
+
+model State {
+  id            Int             @id @default(autoincrement())
+  uf            String          @unique
+  name          String
+  cities        City[]
+  Advertisement Advertisement[]
+}
+
+model City {
+  id            Int             @id @default(autoincrement())
+  name          String
+  state         State?          @relation(fields: [stateId], references: [id])
+  stateId       Int?
+  Advertisement Advertisement[]
 }

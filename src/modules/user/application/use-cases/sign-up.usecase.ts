@@ -14,7 +14,7 @@ export class SignUpUseCase {
   ) {}
 
   async execute(signUpDto: SignUpDto): Promise<void> {
-    const { name, email, password, passwordConfirm, genre } = signUpDto;
+    const { name, email, password, passwordConfirm, gender } = signUpDto;
 
     if (password !== passwordConfirm) {
       throw new PasswordNotMatchException('Passwords do not match');
@@ -34,7 +34,7 @@ export class SignUpUseCase {
       name,
       email,
       password: hashedPassword,
-      genre,
+      gender,
     });
 
     await this.userRepository.create(user);

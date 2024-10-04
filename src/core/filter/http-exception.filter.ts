@@ -1,7 +1,8 @@
 import { EmailAlreadyExistsException } from 'src/modules/user/domain/exceptions/email-already-exists.exception';
 import { PasswordNotMatchException } from '@src/modules/user/domain/exceptions/password-not-match.exception';
 import { InvalidPasswordException } from '@src/modules/user/domain/exceptions/invalid-password.exception';
-import { InvalidGenreException } from '@src/modules/user/domain/exceptions/invalid-genre.exception';
+import { InvalidGenderException } from '@src/modules/user/domain/exceptions/invalid-gender.exception';
+import { UserNotFoundException } from '@src/modules/user/domain/exceptions/user-not-found.exception';
 import { InvalidEmailException } from '@src/modules/user/domain/exceptions/invalid-email.exception';
 import { Response } from 'express';
 import {
@@ -11,7 +12,7 @@ import {
   HttpStatus,
   HttpException,
 } from '@nestjs/common';
-import { UserNotFoundException } from '@src/modules/user/domain/exceptions/user-not-found.exception';
+import { AdvertisementNotFoundException } from '@src/modules/advertisement/domain/exceptions/advertisement-not-found.exception';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -28,7 +29,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     } else if (exception instanceof InvalidPasswordException) {
       status = HttpStatus.BAD_REQUEST;
       message = exception.message;
-    } else if (exception instanceof InvalidGenreException) {
+    } else if (exception instanceof InvalidGenderException) {
       status = HttpStatus.BAD_REQUEST;
       message = exception.message;
     } else if (exception instanceof InvalidEmailException) {
@@ -38,6 +39,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
       status = HttpStatus.BAD_REQUEST;
       message = exception.message;
     } else if (exception instanceof UserNotFoundException) {
+      status = HttpStatus.NOT_FOUND;
+      message = exception.message;
+    } else if (exception instanceof AdvertisementNotFoundException) {
       status = HttpStatus.NOT_FOUND;
       message = exception.message;
     } else if (exception instanceof HttpException) {

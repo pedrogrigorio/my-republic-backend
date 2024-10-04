@@ -34,7 +34,7 @@ export class InMemoryUserRepository implements UserRepository {
         name: user.name,
         email: user.email,
         password: user.password,
-        genre: user.genre,
+        gender: user.gender,
         imgSrc: user.imgSrc,
       },
       id,

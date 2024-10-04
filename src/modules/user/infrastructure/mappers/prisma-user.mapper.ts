@@ -1,5 +1,6 @@
 import { User as RawUser } from '@prisma/client';
 import { User } from '../../domain/entities/user';
+import { Gender } from '@src/core/enums/gender';
 
 export class PrismaUserMapper {
   static toPrisma(user: User): RawUser {
@@ -8,7 +9,7 @@ export class PrismaUserMapper {
       name: user.name,
       email: user.email,
       password: user.password,
-      genre: user.genre,
+      gender: user.gender,
       imgSrc: user.imgSrc,
     };
   }
@@ -19,7 +20,7 @@ export class PrismaUserMapper {
         name: raw.name,
         email: raw.email,
         password: raw.password,
-        genre: raw.genre,
+        gender: raw.gender as Gender,
         imgSrc: raw.imgSrc,
       },
       raw.id,
