@@ -16,6 +16,7 @@ model User {
   imgSrc   String? @map("img_src")
 
   advertisements Advertisement[]
+  notifications  Notification[]
 
   @@map("users")
 }
@@ -25,21 +26,23 @@ model Advertisement {
   title               String
   description         String
   price               Float
-  genderPreference    String
-  allowOppositeGender Boolean
-  totalSlots          Int
-  occupiedSlots       Int
-  bedroomType         String
-  numBedroom          Int
-  numBathroom         Int
-  hasPet              Boolean
+  genderPreference    String  @map("gender_preference")
+  allowOppositeGender Boolean @map("allow_opposite_gender")
+  totalSlots          Int     @map("total_slots")
+  occupiedSlots       Int     @map("occupied_slots")
+  bedroomType         String  @map("bedroom_type")
+  numBedroom          Int     @map("num_bedroom")
+  numBathroom         Int     @map("num_bathroom")
+  hasPet              Boolean @map("has_pet")
 
-  ownerId Int?
-  stateId Int
-  cityId  Int
-  owner   User? @relation(fields: [ownerId], references: [id])
+  ownerId Int   @map("owner_id")
+  stateId Int   @map("state_id")
+  cityId  Int   @map("city_id")
+  owner   User  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   state   State @relation(fields: [stateId], references: [id])
   city    City  @relation(fields: [cityId], references: [id])
+
+  @@map("advertisements")
 }
 
 model State {
@@ -47,13 +50,30 @@ model State {
   uf            String          @unique
   name          String
   cities        City[]
-  Advertisement Advertisement[]
+  advertisement Advertisement[]
+
+  @@map("states")
 }
 
 model City {
   id            Int             @id @default(autoincrement())
   name          String
-  state         State?          @relation(fields: [stateId], references: [id])
-  stateId       Int?
+  state         State           @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  stateId       Int
   Advertisement Advertisement[]
+
+  @@map("cities")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  isRead    Boolean  @default(false) @map("is_read")
+  type      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  recipient   User @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  recipientId Int  @map("recipient_id")
+
+  @@map("notifications")
 }

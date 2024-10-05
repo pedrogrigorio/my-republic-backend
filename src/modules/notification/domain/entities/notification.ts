@@ -1,12 +1,13 @@
 import { NotificationType } from '../enums/notification-type';
-import { User } from '@src/modules/user/domain/entities/user';
+import { Recipient } from './recipient';
 
 interface NotificationProps {
   recipientId: number;
-  recipient?: User;
+  recipient?: Recipient;
   message: string;
   isRead: boolean;
   type: NotificationType;
+  createdAt: Date;
 }
 
 export class Notification {
@@ -34,7 +35,7 @@ export class Notification {
     return this.props.recipient;
   }
 
-  public set recipient(recipient: User) {
+  public set recipient(recipient: Recipient) {
     this.props.recipient = recipient;
   }
 
@@ -60,5 +61,13 @@ export class Notification {
 
   public set type(type: NotificationType) {
     this.props.type = type;
+  }
+
+  public get createdAt() {
+    return this.props.createdAt;
+  }
+
+  public set createdAt(createdAt: Date) {
+    this.props.createdAt = createdAt;
   }
 }

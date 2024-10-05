@@ -1,7 +1,72 @@
-import { Injectable } from '@nestjs/common';
+import { PrismaNotificationMapper } from '../mappers/prisma-notification.mapper';
+import { NotificationRepository } from '../../application/interfaces/notification.repository.interface';
 import { PrismaService } from '@src/core/services/prisma/prisma.service';
+import { Notification } from '../../domain/entities/notification';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class PrismaNotificationRepository {
+export class PrismaNotificationRepository implements NotificationRepository {
   constructor(private prisma: PrismaService) {}
+
+  async create(notification: Notification): Promise<void> {
+    await this.prisma.notification.create({
+      data: {
+        message: notification.message,
+        type: notification.type,
+        recipientId: notification.recipientId,
+      },
+    });
+  }
+
+  async findAll(recipientId: number): Promise<Notification[]> {
+    const rawNotifications = await this.prisma.notification.findMany({
+      include: {
+        recipient: true,
+      },
+      where: {
+        recipientId,
+      },
+    });
+
+    const notifications = rawNotifications.map((notification) =>
+      PrismaNotificationMapper.toDomain(notification),
+    );
+
+    return notifications;
+  }
+
+  async findById(notificationId: number): Promise<Notification> {
+    const notification = await this.prisma.notification.findUnique({
+      include: {
+        recipient: true,
+      },
+      where: {
+        id: notificationId,
+      },
+    });
+
+    return PrismaNotificationMapper.toDomain(notification);
+  }
+
+  async markAsRead(notificationId: number): Promise<void> {
+    await this.prisma.notification.update({
+      data: {
+        isRead: true,
+      },
+      where: {
+        id: notificationId,
+      },
+    });
+  }
+
+  async markAllAsRead(recipientId: number): Promise<void> {
+    await this.prisma.notification.updateMany({
+      data: {
+        isRead: true,
+      },
+      where: {
+        recipientId: recipientId,
+      },
+    });
+  }
 }
