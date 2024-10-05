@@ -6,4 +6,5 @@ export abstract class NotificationRepository {
   abstract markAllAsRead(recipientId: number): Promise<void>;
   abstract findAll(recipientId: number): Promise<Notification[]>;
   abstract findById(notificationId: number): Promise<Notification>;
+  abstract getUnreadCount(recipientId: number): Promise<number>;
 }

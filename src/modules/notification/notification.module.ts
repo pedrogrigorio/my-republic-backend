@@ -3,6 +3,9 @@ import { GetAllNotificationsUseCase } from './application/use-cases/get-all-noti
 import { GetNotificationByIdUseCase } from './application/use-cases/get-notification-by-id.usecase';
 import { NotificationController } from './presentation/controllers/notification.controller';
 import { NotificationRepository } from './application/interfaces/notification.repository.interface';
+import { GetUnreadCountUseCase } from './application/use-cases/get-unread-count.usecase';
+import { MarkAllAsReadUseCase } from './application/use-cases/mark-all-as-read.usecase';
+import { MarkAsReadUseCase } from './application/use-cases/mark-as-read.usecase';
 import { PrismaService } from '@src/core/services/prisma/prisma.service';
 import { Module } from '@nestjs/common';
 
@@ -10,9 +13,12 @@ import { Module } from '@nestjs/common';
   imports: [],
   controllers: [NotificationController],
   providers: [
-    PrismaService,
     GetAllNotificationsUseCase,
     GetNotificationByIdUseCase,
+    GetUnreadCountUseCase,
+    MarkAllAsReadUseCase,
+    MarkAsReadUseCase,
+    PrismaService,
     {
       provide: NotificationRepository,
       useClass: PrismaNotificationRepository,

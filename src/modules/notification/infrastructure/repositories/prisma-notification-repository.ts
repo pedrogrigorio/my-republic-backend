@@ -69,4 +69,15 @@ export class PrismaNotificationRepository implements NotificationRepository {
       },
     });
   }
+
+  async getUnreadCount(recipientId: number): Promise<number> {
+    const count = await this.prisma.notification.count({
+      where: {
+        recipientId,
+        isRead: false,
+      },
+    });
+
+    return count;
+  }
 }
