@@ -6,12 +6,15 @@ import { AuthUserDto } from '@src/modules/auth/application/dtos/auth-user.dto';
 import { GetUnreadCountUseCase } from '../../application/use-cases/get-unread-count.usecase';
 import { MarkAllAsReadUseCase } from '../../application/use-cases/mark-all-as-read.usecase';
 import { MarkAsReadUseCase } from '../../application/use-cases/mark-as-read.usecase';
+import { CreateNotificationDto } from '../../application/dtos/create-notification.dto';
+import { CreateNotificationUseCase } from '../../application/use-cases/create-notification.usecase';
 
 @Controller('notifications')
 export class NotificationController {
   constructor(
     private getAllNotificationsUseCase: GetAllNotificationsUseCase,
     private getNotificationByIdUseCase: GetNotificationByIdUseCase,
+    private createNotificationUseCase: CreateNotificationUseCase,
     private getUnreadCountUseCase: GetUnreadCountUseCase,
     private markAllAsReadUseCase: MarkAllAsReadUseCase,
     private markAsReadUseCase: MarkAsReadUseCase,
@@ -32,7 +35,11 @@ export class NotificationController {
   }
 
   @Post()
-  async createNotification(@Body() createNotificationDto: any) {}
+  async createNotification(
+    @Body() createNotificationDto: CreateNotificationDto,
+  ) {
+    await this.createNotificationUseCase.execute(createNotificationDto);
+  }
 
   @Get('unread-count')
   async getUnreadCount(@CurrentUser() user: AuthUserDto) {

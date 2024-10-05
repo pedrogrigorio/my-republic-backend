@@ -11,8 +11,8 @@ export class PrismaNotificationRepository implements NotificationRepository {
   async create(notification: Notification): Promise<void> {
     await this.prisma.notification.create({
       data: {
-        message: notification.message,
         type: notification.type,
+        message: notification.message,
         recipientId: notification.recipientId,
       },
     });
