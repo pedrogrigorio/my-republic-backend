@@ -8,6 +8,7 @@ import { MarkAllAsReadUseCase } from './application/use-cases/mark-all-as-read.u
 import { MarkAsReadUseCase } from './application/use-cases/mark-as-read.usecase';
 import { PrismaService } from '@src/core/services/prisma/prisma.service';
 import { Module } from '@nestjs/common';
+import { CreateNotificationUseCase } from './application/use-cases/create-notification.usecase';
 
 @Module({
   imports: [],
@@ -15,6 +16,7 @@ import { Module } from '@nestjs/common';
   providers: [
     GetAllNotificationsUseCase,
     GetNotificationByIdUseCase,
+    CreateNotificationUseCase,
     GetUnreadCountUseCase,
     MarkAllAsReadUseCase,
     MarkAsReadUseCase,

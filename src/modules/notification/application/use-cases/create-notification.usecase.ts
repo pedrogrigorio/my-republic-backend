@@ -10,6 +10,7 @@ export class CreateNotificationUseCase {
   async execute(createNotificationDto: CreateNotificationDto): Promise<void> {
     const notification = new Notification({
       recipientId: createNotificationDto.recipientId,
+      message: createNotificationDto.message,
       type: createNotificationDto.type,
     });
 

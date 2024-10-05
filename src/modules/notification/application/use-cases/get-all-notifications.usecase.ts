@@ -1,5 +1,6 @@
 import { NotificationRepository } from '../interfaces/notification.repository.interface';
 import { Injectable } from '@nestjs/common';
+import { NotificationMapper } from '../mappers/notification.mapper';
 
 @Injectable()
 export class GetAllNotificationsUseCase {
@@ -9,6 +10,8 @@ export class GetAllNotificationsUseCase {
     const notifications =
       await this.notificationRepository.findAll(recipientId);
 
-    return notifications;
+    return notifications.map((notification) =>
+      NotificationMapper.toDto(notification),
+    );
   }
 }

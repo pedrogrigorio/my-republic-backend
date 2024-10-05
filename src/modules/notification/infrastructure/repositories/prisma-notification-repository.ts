@@ -45,6 +45,10 @@ export class PrismaNotificationRepository implements NotificationRepository {
       },
     });
 
+    if (!notification) {
+      return null;
+    }
+
     return PrismaNotificationMapper.toDomain(notification);
   }
 

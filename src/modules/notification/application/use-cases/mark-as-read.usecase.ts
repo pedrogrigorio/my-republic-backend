@@ -12,7 +12,7 @@ export class MarkAsReadUseCase {
 
     if (!existingNotification) {
       throw new NotificationNotFoundException(
-        `Notification with id ${existingNotification} not found`,
+        `Notification with id ${recipientId} not found`,
       );
     }
 

@@ -4,7 +4,7 @@ import { Recipient } from './recipient';
 interface NotificationProps {
   recipientId: number;
   recipient?: Recipient;
-  message?: string;
+  message: string;
   isRead?: boolean;
   type: NotificationType;
   createdAt?: Date;

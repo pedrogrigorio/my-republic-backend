@@ -1,13 +1,13 @@
 import { Controller, Param, Patch, Post, Body, Get } from '@nestjs/common';
 import { GetAllNotificationsUseCase } from '../../application/use-cases/get-all-notifications.usecase';
 import { GetNotificationByIdUseCase } from '../../application/use-cases/get-notification-by-id.usecase';
-import { CurrentUser } from '@src/core/decorators/current-user.decorator';
-import { AuthUserDto } from '@src/modules/auth/application/dtos/auth-user.dto';
+import { CreateNotificationUseCase } from '../../application/use-cases/create-notification.usecase';
+import { CreateNotificationDto } from '../../application/dtos/create-notification.dto';
 import { GetUnreadCountUseCase } from '../../application/use-cases/get-unread-count.usecase';
 import { MarkAllAsReadUseCase } from '../../application/use-cases/mark-all-as-read.usecase';
 import { MarkAsReadUseCase } from '../../application/use-cases/mark-as-read.usecase';
-import { CreateNotificationDto } from '../../application/dtos/create-notification.dto';
-import { CreateNotificationUseCase } from '../../application/use-cases/create-notification.usecase';
+import { CurrentUser } from '@src/core/decorators/current-user.decorator';
+import { AuthUserDto } from '@src/modules/auth/application/dtos/auth-user.dto';
 
 @Controller('notifications')
 export class NotificationController {
@@ -27,6 +27,11 @@ export class NotificationController {
     return this.getAllNotificationsUseCase.execute(id);
   }
 
+  @Get('unread-count')
+  async getUnreadCount(@CurrentUser() user: AuthUserDto) {
+    return await this.getUnreadCountUseCase.execute(user.id);
+  }
+
   @Get(':id')
   async getNotification(@Param('id') id: string) {
     const notificationId = parseInt(id);
@@ -39,11 +44,6 @@ export class NotificationController {
     @Body() createNotificationDto: CreateNotificationDto,
   ) {
     await this.createNotificationUseCase.execute(createNotificationDto);
-  }
-
-  @Get('unread-count')
-  async getUnreadCount(@CurrentUser() user: AuthUserDto) {
-    return this.getUnreadCountUseCase.execute(user.id);
   }
 
   @Patch(':id/read')

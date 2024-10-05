@@ -8,4 +8,7 @@ export class CreateNotificationDto {
   @IsEnum(NotificationType)
   @IsNotEmpty()
   type: NotificationType;
+
+  @IsNotEmpty()
+  message: string;
 }
