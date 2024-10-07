@@ -5,5 +5,6 @@ export abstract class CityRepository {
   abstract update(city: City): Promise<void>;
   abstract findAll(): Promise<City[]>;
   abstract findById(cityId: number): Promise<City>;
+  abstract findByName(name: string): Promise<City[]>;
   abstract deleteById(cityId: number): Promise<void>;
 }

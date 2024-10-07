@@ -21,6 +21,7 @@ import { LocaleService } from './application/interfaces/locale.service.interface
 import { IBGELocaleService } from './infratructure/services/ibge-locale.service';
 import { PopulateCitiesUseCase } from './application/use-cases/populate-cities.usecase';
 import { PopulateStatesUseCase } from './application/use-cases/populate-states.usecase';
+import { SearchCitiesUseCase } from './application/use-cases/search-cities.usecase';
 
 @Module({
   imports: [HttpModule],
@@ -33,6 +34,7 @@ import { PopulateStatesUseCase } from './application/use-cases/populate-states.u
     UpdateAdvertisementUseCase,
     PopulateCitiesUseCase,
     PopulateStatesUseCase,
+    SearchCitiesUseCase,
     GetAllCitiesUseCase,
     GetAllStatesUseCase,
     PrismaService,

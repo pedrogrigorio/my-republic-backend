@@ -6,7 +6,11 @@ export class CityMapper {
     return {
       id: city.id,
       name: city.name,
-      stateId: city.stateId,
+      state: {
+        id: city.state.id,
+        uf: city.state.uf,
+        name: city.state.name,
+      },
     };
   }
 }
