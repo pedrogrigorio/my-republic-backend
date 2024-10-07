@@ -1,9 +1,9 @@
 import { PrismaStateMapper } from './prisma-state.mapper';
 import { PrismaCityMapper } from './prisma-city.mapper';
-import { PrismaUserMapper } from '@src/modules/user/infrastructure/mappers/prisma-user.mapper';
 import { Advertisement } from '../../domain/entities/advertisement';
 import { BedroomType } from '../../domain/enums/bedroomtype';
 import { Gender } from '@src/core/enums/gender';
+import { Owner } from '../../domain/entities/owner';
 import {
   Advertisement as RawAdvertisement,
   State as RawState,
@@ -55,9 +55,14 @@ export class PrismaAdvertisementMapper {
         cityId: raw.cityId,
         stateId: raw.stateId,
         ownerId: raw.ownerId,
-        owner: PrismaUserMapper.toDomain(raw.owner),
         city: PrismaCityMapper.toDomain(raw.city),
         state: PrismaStateMapper.toDomain(raw.state),
+        owner: new Owner(
+          {
+            name: raw.owner.name,
+          },
+          raw.owner.id,
+        ),
       },
       raw.id,
     );

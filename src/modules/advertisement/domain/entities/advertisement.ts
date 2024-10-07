@@ -1,8 +1,8 @@
-import { Gender } from '@src/core/enums/gender';
 import { BedroomType } from '../enums/bedroomtype';
-import { User } from '@src/modules/user/domain/entities/user';
-import { City } from './city';
+import { Gender } from '@src/core/enums/gender';
 import { State } from './state';
+import { Owner } from './owner';
+import { City } from './city';
 
 interface AdvertisementProps {
   title: string;
@@ -16,7 +16,7 @@ interface AdvertisementProps {
   numBedroom: number;
   numBathroom: number;
   hasPet: boolean;
-  owner?: User;
+  owner?: Owner;
   ownerId: number;
   city?: City;
   cityId: number;
@@ -129,7 +129,7 @@ export class Advertisement {
     return this.props.owner;
   }
 
-  public set owner(owner: User) {
+  public set owner(owner: Owner) {
     this.props.owner = owner;
   }
 

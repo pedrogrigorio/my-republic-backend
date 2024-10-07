@@ -1,5 +1,5 @@
-import { Advertisement } from '../../domain/entities/advertisement';
 import { AdvertisementResponseDto } from '../dtos/advertisement-response.dto';
+import { Advertisement } from '../../domain/entities/advertisement';
 
 export class AdvertisementMapper {
   static toDto(advertisement: Advertisement): AdvertisementResponseDto {
@@ -29,9 +29,6 @@ export class AdvertisementMapper {
       owner: {
         id: advertisement.owner.id,
         name: advertisement.owner.name,
-        email: advertisement.owner.email,
-        gender: advertisement.owner.gender,
-        imgSrc: advertisement.owner.imgSrc,
       },
     };
   }
