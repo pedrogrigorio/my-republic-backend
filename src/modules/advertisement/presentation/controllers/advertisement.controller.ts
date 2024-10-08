@@ -14,22 +14,43 @@ import {
   Body,
   Put,
   Get,
+  Query,
 } from '@nestjs/common';
+import { SearchAdvertisementsByCityUseCase } from '../../application/use-cases/search-advertisements-by-city';
 
 @Controller('advertisements')
 export class AdvertisementController {
   constructor(
+    private searchAdvertisementsByCityUseCase: SearchAdvertisementsByCityUseCase,
     private getAllAdvertisementsUseCase: GetAllAdvertisementsUseCase,
     private deleteAdvertisementUseCase: DeleteAdvertisementUseCase,
-    private getAdvertisementById: GetAdvertisementByIdUseCase,
     private createAdvertisementUseCase: CreateAdvertisementUseCase,
     private updateAdvertisementUseCase: UpdateAdvertisementUseCase,
+    private getAdvertisementById: GetAdvertisementByIdUseCase,
   ) {}
 
   @isPublic()
   @Get()
   async getAllAdvertisements() {
     return await this.getAllAdvertisementsUseCase.execute();
+  }
+
+  @isPublic()
+  @Get('search-by-city')
+  async searchAdvertisementsByCity(
+    @Query('city') cityId: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+  ) {
+    const id = parseInt(cityId);
+    const pageNumber = page ? parseInt(page) : 1;
+    const pageSizeNumber = pageSize ? parseInt(pageSize) : 12;
+
+    return await this.searchAdvertisementsByCityUseCase.execute(
+      id,
+      pageNumber,
+      pageSizeNumber,
+    );
   }
 
   @isPublic()

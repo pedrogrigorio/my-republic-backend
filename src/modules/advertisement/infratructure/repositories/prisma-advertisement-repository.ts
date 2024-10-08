@@ -3,6 +3,7 @@ import { PrismaService } from '@src/core/services/prisma/prisma.service';
 import { Advertisement } from '../../domain/entities/advertisement';
 import { PrismaAdvertisementMapper } from '../mappers/prisma-advertisement.mapper';
 import { Injectable } from '@nestjs/common';
+import { AdvertisementSearchResult } from '../../domain/entities/advertisement-search-result';
 
 @Injectable()
 export class PrismaAdvertisementRepository implements AdvertisementRepository {
@@ -70,6 +71,44 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
     }
 
     return PrismaAdvertisementMapper.toDomain(ad);
+  }
+
+  async findByCity(
+    cityId: number,
+    page: number,
+    pageSize: number,
+  ): Promise<AdvertisementSearchResult> {
+    const skip = (page - 1) * pageSize;
+
+    const totalItems = await this.prisma.advertisement.count({
+      where: {
+        cityId,
+      },
+    });
+
+    const advertisements = await this.prisma.advertisement.findMany({
+      include: {
+        owner: true,
+        state: true,
+        city: true,
+      },
+      where: {
+        cityId,
+      },
+      skip: skip,
+      take: pageSize,
+    });
+
+    const adsDto = advertisements.map((ad) =>
+      PrismaAdvertisementMapper.toDomain(ad),
+    );
+
+    const searchResult = new AdvertisementSearchResult({
+      total: totalItems,
+      advertisements: adsDto,
+    });
+
+    return searchResult;
   }
 
   async deleteById(advertisementId: number): Promise<void> {

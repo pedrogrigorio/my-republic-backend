@@ -22,11 +22,13 @@ import { IBGELocaleService } from './infratructure/services/ibge-locale.service'
 import { PopulateCitiesUseCase } from './application/use-cases/populate-cities.usecase';
 import { PopulateStatesUseCase } from './application/use-cases/populate-states.usecase';
 import { SearchCitiesUseCase } from './application/use-cases/search-cities.usecase';
+import { SearchAdvertisementsByCityUseCase } from './application/use-cases/search-advertisements-by-city';
 
 @Module({
   imports: [HttpModule],
   controllers: [AdvertisementController, StateController, CityController],
   providers: [
+    SearchAdvertisementsByCityUseCase,
     GetAllAdvertisementsUseCase,
     GetAdvertisementByIdUseCase,
     DeleteAdvertisementUseCase,
