@@ -26,14 +26,9 @@ export class CreateAdvertisementUseCase {
       (amenity) => createAdvertisementDto.amenities[amenity],
     );
 
-    console.log(ruleTags);
-    console.log(amenityTags);
-
     const rules = await this.ruleRepository.findManyByTags(ruleTags);
-    console.log(rules);
 
     const amenities = await this.amenityRepository.findManyByTags(amenityTags);
-    console.log(amenities);
 
     const advertisement = new Advertisement({
       ...createAdvertisementDto,
