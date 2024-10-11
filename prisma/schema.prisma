@@ -21,6 +21,19 @@ model User {
   @@map("users")
 }
 
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  isRead    Boolean  @default(false) @map("is_read")
+  type      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  recipient   User @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  recipientId Int  @map("recipient_id")
+
+  @@map("notifications")
+}
+
 model Advertisement {
   id                  Int     @id @default(autoincrement())
   title               String
@@ -42,6 +55,9 @@ model Advertisement {
   state   State @relation(fields: [stateId], references: [id])
   city    City  @relation(fields: [cityId], references: [id])
 
+  rules     Rule[]    @relation("AdvertisementRules")
+  amenities Amenity[] @relation("AdvertisementAmenities")
+
   @@map("advertisements")
 }
 
@@ -50,7 +66,7 @@ model State {
   uf            String          @unique
   name          String
   cities        City[]
-  advertisement Advertisement[]
+  advetisements Advertisement[]
 
   @@map("states")
 }
@@ -60,20 +76,27 @@ model City {
   name          String
   state         State           @relation(fields: [stateId], references: [id], onDelete: Cascade)
   stateId       Int
-  Advertisement Advertisement[]
+  advetisements Advertisement[]
 
   @@map("cities")
 }
 
-model Notification {
-  id        Int      @id @default(autoincrement())
-  message   String
-  isRead    Boolean  @default(false) @map("is_read")
-  type      String
-  createdAt DateTime @default(now()) @map("created_at")
+model Rule {
+  id    Int    @id @default(autoincrement())
+  tag   String @unique
+  value String
 
-  recipient   User @relation(fields: [recipientId], references: [id], onDelete: Cascade)
-  recipientId Int  @map("recipient_id")
+  advertisements Advertisement[] @relation("AdvertisementRules")
 
-  @@map("notifications")
+  @@map("rules")
+}
+
+model Amenity {
+  id    Int    @id @default(autoincrement())
+  tag   String @unique
+  value String
+
+  advertisements Advertisement[] @relation("AdvertisementAmenities")
+
+  @@map("amenities")
 }

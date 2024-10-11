@@ -23,6 +23,10 @@ import { PopulateCitiesUseCase } from './application/use-cases/populate-cities.u
 import { PopulateStatesUseCase } from './application/use-cases/populate-states.usecase';
 import { SearchCitiesUseCase } from './application/use-cases/search-cities.usecase';
 import { SearchAdvertisementsByCityUseCase } from './application/use-cases/search-advertisements-by-city';
+import { RuleRepository } from './application/interfaces/rule.repository.interface';
+import { PrismaRuleRepository } from './infratructure/repositories/prisma-rule-repository';
+import { AmenityRepository } from './application/interfaces/amenity.repository.interface';
+import { PrismaAmenityRepository } from './infratructure/repositories/prisma-amenity-repository';
 
 @Module({
   imports: [HttpModule],
@@ -51,6 +55,14 @@ import { SearchAdvertisementsByCityUseCase } from './application/use-cases/searc
     {
       provide: StateRepository,
       useClass: PrismaStateRepository,
+    },
+    {
+      provide: AmenityRepository,
+      useClass: PrismaAmenityRepository,
+    },
+    {
+      provide: RuleRepository,
+      useClass: PrismaRuleRepository,
     },
     {
       provide: LocaleService,

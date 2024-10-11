@@ -24,7 +24,11 @@ export class UpdateAdvertisementUseCase {
     }
 
     const advertisement = new Advertisement(
-      updateAdvertisementDto,
+      {
+        ...updateAdvertisementDto,
+        rules: [],
+        amenities: [],
+      },
       advertisementId,
     );
 

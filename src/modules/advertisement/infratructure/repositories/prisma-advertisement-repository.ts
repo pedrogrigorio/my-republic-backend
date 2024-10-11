@@ -10,14 +10,29 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
   constructor(private prisma: PrismaService) {}
 
   async create(advertisement: Advertisement): Promise<Advertisement> {
-    const raw = PrismaAdvertisementMapper.toPrisma(advertisement);
+    const { amenities, rules, ...data } =
+      PrismaAdvertisementMapper.toPrisma(advertisement);
 
     const createdAd = await this.prisma.advertisement.create({
-      data: raw,
+      data: {
+        ...data,
+        amenities: {
+          connect: amenities.map((amenity) => ({
+            id: amenity.id,
+          })),
+        },
+        rules: {
+          connect: rules.map((rule) => ({
+            id: rule.id,
+          })),
+        },
+      },
       include: {
         owner: true,
         state: true,
         city: true,
+        amenities: true,
+        rules: true,
       },
     });
 
@@ -25,10 +40,23 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
   }
 
   async update(advertisement: Advertisement): Promise<Advertisement> {
-    const raw = PrismaAdvertisementMapper.toPrisma(advertisement);
+    const { amenities, rules, ...data } =
+      PrismaAdvertisementMapper.toPrisma(advertisement);
 
     const updatedAd = await this.prisma.advertisement.update({
-      data: raw,
+      data: {
+        ...data,
+        amenities: {
+          connect: amenities.map((amenity) => ({
+            id: amenity.id,
+          })),
+        },
+        rules: {
+          connect: rules.map((rule) => ({
+            id: rule.id,
+          })),
+        },
+      },
       where: {
         id: advertisement.id,
       },
@@ -36,6 +64,8 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
         owner: true,
         state: true,
         city: true,
+        amenities: true,
+        rules: true,
       },
     });
 
@@ -48,6 +78,8 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
         owner: true,
         state: true,
         city: true,
+        amenities: true,
+        rules: true,
       },
     });
 
@@ -63,6 +95,8 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
         owner: true,
         state: true,
         city: true,
+        amenities: true,
+        rules: true,
       },
     });
 
@@ -91,6 +125,8 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
         owner: true,
         state: true,
         city: true,
+        amenities: true,
+        rules: true,
       },
       where: {
         cityId,

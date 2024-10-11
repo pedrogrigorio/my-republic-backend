@@ -1,6 +1,9 @@
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsEnum, IsOptional, ValidateNested } from 'class-validator';
 import { BedroomType } from '../../domain/enums/bedroomtype';
 import { Gender } from '@src/core/enums/gender';
+import { Type } from 'class-transformer';
+import { AmenitiesDto } from './amenities.dto';
+import { RulesDto } from './rules.dto';
 
 export class UpdateAdvertisementDto {
   title: string;
@@ -33,4 +36,12 @@ export class UpdateAdvertisementDto {
   cityId: number;
 
   stateId: number;
+
+  @ValidateNested()
+  @Type(() => AmenitiesDto)
+  amenities: AmenitiesDto;
+
+  @ValidateNested()
+  @Type(() => RulesDto)
+  rules: RulesDto;
 }

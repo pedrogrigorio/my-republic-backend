@@ -65,7 +65,11 @@ export class AdvertisementController {
   async createAdvertisement(
     @Body() createAdvertisementDto: CreateAdvertisementDto,
   ) {
-    await this.createAdvertisementUseCase.execute(createAdvertisementDto);
+    try {
+      await this.createAdvertisementUseCase.execute(createAdvertisementDto);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   @Put(':id')

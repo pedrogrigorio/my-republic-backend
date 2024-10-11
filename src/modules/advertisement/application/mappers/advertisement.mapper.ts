@@ -30,6 +30,16 @@ export class AdvertisementMapper {
         id: advertisement.owner.id,
         name: advertisement.owner.name,
       },
+      rules: advertisement.rules.map((rule) => ({
+        id: rule.id,
+        tag: rule.tag,
+        value: rule.value,
+      })),
+      amenities: advertisement.amenities.map((amenity) => ({
+        id: amenity.id,
+        tag: amenity.tag,
+        value: amenity.value,
+      })),
     };
   }
 }

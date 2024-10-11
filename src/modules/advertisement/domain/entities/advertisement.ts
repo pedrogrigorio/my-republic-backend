@@ -3,6 +3,8 @@ import { Gender } from '@src/core/enums/gender';
 import { State } from './state';
 import { Owner } from './owner';
 import { City } from './city';
+import { Amenity } from './amenity';
+import { Rule } from './rule';
 
 interface AdvertisementProps {
   title: string;
@@ -22,6 +24,8 @@ interface AdvertisementProps {
   cityId: number;
   state?: State;
   stateId: number;
+  amenities: Amenity[];
+  rules: Rule[];
 }
 
 export class Advertisement {
@@ -171,5 +175,21 @@ export class Advertisement {
 
   public set stateId(stateId: number) {
     this.props.stateId = stateId;
+  }
+
+  public get rules() {
+    return this.props.rules;
+  }
+
+  public set rules(rules: Rule[]) {
+    this.props.rules = rules;
+  }
+
+  public get amenities() {
+    return this.props.amenities;
+  }
+
+  public set amenities(amenities: Amenity[]) {
+    this.props.amenities = amenities;
   }
 }

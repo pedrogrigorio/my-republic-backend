@@ -1,6 +1,9 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNotEmpty, ValidateNested } from 'class-validator';
 import { BedroomType } from '../../domain/enums/bedroomtype';
 import { Gender } from '@src/core/enums/gender';
+import { AmenitiesDto } from './amenities.dto';
+import { RulesDto } from './rules.dto';
+import { Type } from 'class-transformer';
 
 export class CreateAdvertisementDto {
   @IsNotEmpty()
@@ -46,4 +49,12 @@ export class CreateAdvertisementDto {
 
   @IsNotEmpty()
   stateId: number;
+
+  @ValidateNested()
+  @Type(() => AmenitiesDto)
+  amenities: AmenitiesDto;
+
+  @ValidateNested()
+  @Type(() => RulesDto)
+  rules: RulesDto;
 }
