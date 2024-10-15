@@ -18,10 +18,10 @@ import { Module } from '@nestjs/common';
   ],
   controllers: [AppControler],
   providers: [
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}
