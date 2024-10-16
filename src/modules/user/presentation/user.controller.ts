@@ -111,11 +111,15 @@ export class UserController {
     file: Express.Multer.File,
     @Param('id') userId: string,
   ) {
-    const id = parseInt(userId);
+    try {
+      const id = parseInt(userId);
 
-    const updatedUser = await this.updatePhotoUseCase.execute(file, id);
+      const updatedUser = await this.updatePhotoUseCase.execute(file, id);
 
-    return updatedUser;
+      return updatedUser;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   @Delete(':id')
