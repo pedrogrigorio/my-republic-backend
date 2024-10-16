@@ -107,6 +107,46 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
     return PrismaAdvertisementMapper.toDomain(ad);
   }
 
+  async findByOwner(
+    ownerId: number,
+    page: number,
+    pageSize: number,
+  ): Promise<AdvertisementSearchResult> {
+    const skip = (page - 1) * pageSize;
+
+    const totalItems = await this.prisma.advertisement.count({
+      where: {
+        ownerId,
+      },
+    });
+
+    const advertisements = await this.prisma.advertisement.findMany({
+      include: {
+        owner: true,
+        state: true,
+        city: true,
+        amenities: true,
+        rules: true,
+      },
+      where: {
+        ownerId,
+      },
+      skip: skip,
+      take: pageSize,
+    });
+
+    const adsDto = advertisements.map((ad) =>
+      PrismaAdvertisementMapper.toDomain(ad),
+    );
+
+    const myAds = new AdvertisementSearchResult({
+      total: totalItems,
+      advertisements: adsDto,
+    });
+
+    return myAds;
+  }
+
   async findByCity(
     cityId: number,
     page: number,

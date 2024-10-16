@@ -17,11 +17,15 @@ import {
   Query,
 } from '@nestjs/common';
 import { SearchAdvertisementsByCityUseCase } from '../../application/use-cases/search-advertisements-by-city';
+import { CurrentUser } from '@src/core/decorators/current-user.decorator';
+import { AuthUserDto } from '@src/modules/auth/application/dtos/auth-user.dto';
+import { GetAdvertisementsByOwnerUseCase } from '../../application/use-cases/get-advertisements-by-owner.usecase';
 
 @Controller('advertisements')
 export class AdvertisementController {
   constructor(
     private searchAdvertisementsByCityUseCase: SearchAdvertisementsByCityUseCase,
+    private getAdvertisementsByOwnerUseCase: GetAdvertisementsByOwnerUseCase,
     private getAllAdvertisementsUseCase: GetAllAdvertisementsUseCase,
     private deleteAdvertisementUseCase: DeleteAdvertisementUseCase,
     private createAdvertisementUseCase: CreateAdvertisementUseCase,
@@ -53,6 +57,23 @@ export class AdvertisementController {
     );
   }
 
+  @Get('get-by-owner')
+  async getAdvertisementByOwner(
+    @CurrentUser() user: AuthUserDto,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+  ) {
+    const { id } = user;
+    const pageNumber = page ? parseInt(page) : 1;
+    const pageSizeNumber = pageSize ? parseInt(pageSize) : 6;
+
+    return await this.getAdvertisementsByOwnerUseCase.execute(
+      id,
+      pageNumber,
+      pageSizeNumber,
+    );
+  }
+
   @isPublic()
   @Get(':id')
   async getAdvertisement(@Param('id') advertisementId: string) {
@@ -65,11 +86,7 @@ export class AdvertisementController {
   async createAdvertisement(
     @Body() createAdvertisementDto: CreateAdvertisementDto,
   ) {
-    try {
-      await this.createAdvertisementUseCase.execute(createAdvertisementDto);
-    } catch (error) {
-      console.log(error);
-    }
+    await this.createAdvertisementUseCase.execute(createAdvertisementDto);
   }
 
   @Put(':id')

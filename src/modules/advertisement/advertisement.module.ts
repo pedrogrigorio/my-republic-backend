@@ -27,12 +27,14 @@ import { RuleRepository } from './application/interfaces/rule.repository.interfa
 import { PrismaRuleRepository } from './infratructure/repositories/prisma-rule-repository';
 import { AmenityRepository } from './application/interfaces/amenity.repository.interface';
 import { PrismaAmenityRepository } from './infratructure/repositories/prisma-amenity-repository';
+import { GetAdvertisementsByOwnerUseCase } from './application/use-cases/get-advertisements-by-owner.usecase';
 
 @Module({
   imports: [HttpModule],
   controllers: [AdvertisementController, StateController, CityController],
   providers: [
     SearchAdvertisementsByCityUseCase,
+    GetAdvertisementsByOwnerUseCase,
     GetAllAdvertisementsUseCase,
     GetAdvertisementByIdUseCase,
     DeleteAdvertisementUseCase,

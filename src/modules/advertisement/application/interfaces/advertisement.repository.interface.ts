@@ -6,10 +6,17 @@ export abstract class AdvertisementRepository {
   abstract update(advertisement: Advertisement): Promise<Advertisement>;
   abstract findAll(): Promise<Advertisement[]>;
   abstract findById(advertisementId: number): Promise<Advertisement>;
+  abstract findByOwner(
+    ownerId: number,
+    page: number,
+    pageSize: number,
+  ): Promise<AdvertisementSearchResult>;
+
   abstract findByCity(
     cityId: number,
     page: number,
     pageSize: number,
   ): Promise<AdvertisementSearchResult>;
+
   abstract deleteById(advertisementId: number): Promise<void>;
 }
