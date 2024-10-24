@@ -94,6 +94,7 @@ export class AdvertisementController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async createAdvertisement(
+    @CurrentUser() user: AuthUserDto,
     @UploadedFile(
       new ParseFilePipe({
         validators: [new FileTypeValidator({ fileType: /\/(jpg|jpeg|png)$/ })],
@@ -111,15 +112,19 @@ export class AdvertisementController {
       throw new BadRequestException('Advertisement data is required');
     }
 
+    console.log(file);
     let createAdvertisementDto: CreateAdvertisementDto;
 
     try {
       const parsedData = JSON.parse(createAdvertisementDtoString);
+      parsedData.ownerId = user.id;
 
       createAdvertisementDto = plainToInstance(
         CreateAdvertisementDto,
         parsedData,
       );
+
+      console.log(createAdvertisementDto);
     } catch (error) {
       if (error instanceof SyntaxError) {
         throw new BadRequestException('Invalid JSON format');
@@ -140,6 +145,7 @@ export class AdvertisementController {
   @Put(':id')
   @UseInterceptors(FileInterceptor('file'))
   async updateAdvertisement(
+    @CurrentUser() user: AuthUserDto,
     @UploadedFile(
       new ParseFilePipe({
         validators: [new FileTypeValidator({ fileType: /\/(jpg|jpeg|png)$/ })],
@@ -161,10 +167,11 @@ export class AdvertisementController {
       throw new BadRequestException('Advertisement data is required');
     }
 
-    let updateAdvertisementDto: CreateAdvertisementDto;
+    let updateAdvertisementDto: UpdateAdvertisementDto;
 
     try {
       const parsedData = JSON.parse(updateAdvertisementDtoString);
+      parsedData.ownerId = user.id;
 
       updateAdvertisementDto = plainToInstance(
         UpdateAdvertisementDto,
