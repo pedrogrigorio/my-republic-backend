@@ -80,6 +80,7 @@ model City {
   stateId       Int
   advetisements Advertisement[]
 
+  @@unique([name, stateId])
   @@map("cities")
 }
 

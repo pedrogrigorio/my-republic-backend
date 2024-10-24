@@ -2,6 +2,7 @@ import { Controller, Get, Post, Query } from '@nestjs/common';
 import { PopulateCitiesUseCase } from '../../application/use-cases/populate-cities.usecase';
 import { GetAllCitiesUseCase } from '../../application/use-cases/get-all-cities.usecase';
 import { SearchCitiesUseCase } from '../../application/use-cases/search-cities.usecase';
+import { isPublic } from '@src/core/decorators/is-public.decorator';
 
 @Controller('cities')
 export class CityController {
@@ -21,6 +22,7 @@ export class CityController {
     return await this.searchCitiesUseCase.execute(searchTerm);
   }
 
+  @isPublic()
   @Post('populate')
   async populateCities() {
     return await this.populateCitiesUseCase.execute();

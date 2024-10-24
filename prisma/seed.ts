@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import axios from 'axios';
 
 const prisma = new PrismaClient();
 
@@ -24,6 +25,30 @@ const amenities = [
   { tag: 'publicTransportNearby', value: 'Transporte público próximo' },
 ];
 
+async function getStates() {
+  const response = await axios.get(
+    'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+  );
+  return response.data.map((state: any) => ({
+    name: state.nome,
+    uf: state.sigla,
+  }));
+}
+
+async function getCities() {
+  const response = await axios.get(
+    'https://servicodados.ibge.gov.br/api/v1/localidades/municipios',
+  );
+  const states = await prisma.state.findMany();
+
+  return response.data.map((city: any) => ({
+    name: city.nome,
+    stateId: states.find(
+      (state) => state.uf === city.microrregiao.mesorregiao.UF.sigla,
+    )?.id,
+  }));
+}
+
 async function main() {
   console.log('Seeding rules...');
   for (const rule of rules) {
@@ -40,6 +65,31 @@ async function main() {
       where: { tag: amenity.tag },
       update: {},
       create: amenity,
+    });
+  }
+
+  console.log('Seeding states...');
+  const states = await getStates();
+  for (const state of states) {
+    await prisma.state.upsert({
+      where: { uf: state.uf },
+      update: {},
+      create: state,
+    });
+  }
+
+  console.log('Seeding cities...');
+  const cities = await getCities();
+  for (const city of cities) {
+    await prisma.city.upsert({
+      where: {
+        name_stateId: {
+          name: city.name,
+          stateId: city.stateId,
+        },
+      },
+      update: {},
+      create: city,
     });
   }
 }
