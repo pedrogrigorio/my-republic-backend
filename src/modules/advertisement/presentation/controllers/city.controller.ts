@@ -3,6 +3,7 @@ import { PopulateCitiesUseCase } from '../../application/use-cases/populate-citi
 import { GetAllCitiesUseCase } from '../../application/use-cases/get-all-cities.usecase';
 import { SearchCitiesUseCase } from '../../application/use-cases/search-cities.usecase';
 import { isPublic } from '@src/core/decorators/is-public.decorator';
+import { GetCitiesByStateIdUseCase } from '../../application/use-cases/get-cities-by-state-id.usecase';
 
 @Controller('cities')
 export class CityController {
@@ -10,11 +11,19 @@ export class CityController {
     private getAllCitiesUseCase: GetAllCitiesUseCase,
     private populateCitiesUseCase: PopulateCitiesUseCase,
     private searchCitiesUseCase: SearchCitiesUseCase,
+    private getCitiesByStateIdUseCase: GetCitiesByStateIdUseCase,
   ) {}
 
   @Get()
   async getAllCities() {
     return await this.getAllCitiesUseCase.execute();
+  }
+
+  @Get('by-state')
+  async getCitiesByState(@Query('stateId') stateId: string) {
+    const id = parseInt(stateId);
+
+    return await this.getCitiesByStateIdUseCase.execute(id);
   }
 
   @Get('search')

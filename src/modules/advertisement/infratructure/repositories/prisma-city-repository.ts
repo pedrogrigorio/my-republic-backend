@@ -52,6 +52,19 @@ export class PrismaCityRepository implements CityRepository {
     return PrismaCityMapper.toDomain(city);
   }
 
+  async findByStateId(stateId: number): Promise<City[]> {
+    const cities = await this.prisma.city.findMany({
+      include: {
+        state: true,
+      },
+      where: {
+        stateId,
+      },
+    });
+
+    return cities.map((city) => PrismaCityMapper.toDomain(city));
+  }
+
   async findByName(name: string): Promise<City[]> {
     const cities = await this.prisma.city.findMany({
       include: {
