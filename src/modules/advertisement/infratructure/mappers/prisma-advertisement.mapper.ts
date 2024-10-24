@@ -46,6 +46,8 @@ export class PrismaAdvertisementMapper {
       ownerId: advertisement.ownerId,
       cityId: advertisement.cityId,
       stateId: advertisement.stateId,
+      isActive: advertisement.isActive,
+      imgSrc: advertisement.imgSrc,
       rules: advertisement.rules.map((rule) => PrismaRuleMapper.toPrisma(rule)),
       amenities: advertisement.amenities.map((amenity) =>
         PrismaAmenityMapper.toPrisma(amenity),
@@ -67,6 +69,8 @@ export class PrismaAdvertisementMapper {
         numBathroom: raw.numBathroom,
         numBedroom: raw.numBedroom,
         hasPet: raw.hasPet,
+        isActive: raw.isActive,
+        imgSrc: raw.imgSrc,
         cityId: raw.cityId,
         stateId: raw.stateId,
         ownerId: raw.ownerId,

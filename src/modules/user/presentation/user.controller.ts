@@ -8,6 +8,7 @@ import { DeleteUserUseCase } from '../application/use-cases/delete-user.usecase'
 import { updatePasswordDto } from '../application/dtos/update-password.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateEmailDto } from '../application/dtos/update-email.dto';
+import { UserOwnership } from '../infrastructure/guards/user-ownership.guard';
 import { SignUpUseCase } from '../application/use-cases/sign-up.usecase';
 import { UpdateNameDto } from '../application/dtos/update-name.dto';
 import { SignUpDto } from '../application/dtos/sign-up.dto';
@@ -27,7 +28,6 @@ import {
   Get,
   UseGuards,
 } from '@nestjs/common';
-import { UserOwnership } from '../infrastructure/guards/user-ownership.guard';
 
 @Controller('users')
 export class UserController {
@@ -111,15 +111,11 @@ export class UserController {
     file: Express.Multer.File,
     @Param('id') userId: string,
   ) {
-    try {
-      const id = parseInt(userId);
+    const id = parseInt(userId);
 
-      const updatedUser = await this.updatePhotoUseCase.execute(file, id);
+    const updatedUser = await this.updatePhotoUseCase.execute(file, id);
 
-      return updatedUser;
-    } catch (error) {
-      console.log(error);
-    }
+    return updatedUser;
   }
 
   @Delete(':id')

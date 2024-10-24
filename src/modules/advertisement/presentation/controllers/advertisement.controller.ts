@@ -1,3 +1,5 @@
+import { SearchAdvertisementsByCityUseCase } from '../../application/use-cases/search-advertisements-by-city';
+import { GetAdvertisementsByOwnerUseCase } from '../../application/use-cases/get-advertisements-by-owner.usecase';
 import { GetAllAdvertisementsUseCase } from '../../application/use-cases/get-all-advertisements.usecase';
 import { GetAdvertisementByIdUseCase } from '../../application/use-cases/get-advertisement-by-id.usecase';
 import { DeleteAdvertisementUseCase } from '../../application/use-cases/delete-advertisement.usecase';
@@ -5,21 +7,28 @@ import { UpdateAdvertisementUseCase } from '../../application/use-cases/update-a
 import { CreateAdvertisementUseCase } from '../../application/use-cases/create-advertisement.usecase';
 import { CreateAdvertisementDto } from '../../application/dtos/create-advertisement.dto';
 import { UpdateAdvertisementDto } from '../../application/dtos/update-advertisement.dto';
+import { buildErrorMessage } from '@src/core/utils/build-error-message';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { plainToInstance } from 'class-transformer';
+import { CurrentUser } from '@src/core/decorators/current-user.decorator';
+import { AuthUserDto } from '@src/modules/auth/application/dtos/auth-user.dto';
 import { isPublic } from '@src/core/decorators/is-public.decorator';
+import { validate } from 'class-validator';
 import {
+  BadRequestException,
+  FileTypeValidator,
+  UseInterceptors,
+  ParseFilePipe,
+  UploadedFile,
   Controller,
   Delete,
+  Query,
   Param,
   Post,
   Body,
   Put,
   Get,
-  Query,
 } from '@nestjs/common';
-import { SearchAdvertisementsByCityUseCase } from '../../application/use-cases/search-advertisements-by-city';
-import { CurrentUser } from '@src/core/decorators/current-user.decorator';
-import { AuthUserDto } from '@src/modules/auth/application/dtos/auth-user.dto';
-import { GetAdvertisementsByOwnerUseCase } from '../../application/use-cases/get-advertisements-by-owner.usecase';
 
 @Controller('advertisements')
 export class AdvertisementController {
@@ -83,20 +92,103 @@ export class AdvertisementController {
   }
 
   @Post()
+  @UseInterceptors(FileInterceptor('file'))
   async createAdvertisement(
-    @Body() createAdvertisementDto: CreateAdvertisementDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: /\/(jpg|jpeg|png)$/ })],
+        exceptionFactory: () => {
+          return new BadRequestException(
+            'File must be an image of type jpg, jpeg, or png',
+          );
+        },
+      }),
+    )
+    file: Express.Multer.File,
+    @Body('createAdvertisementDto') createAdvertisementDtoString: string,
   ) {
-    await this.createAdvertisementUseCase.execute(createAdvertisementDto);
+    if (!createAdvertisementDtoString) {
+      throw new BadRequestException('Advertisement data is required');
+    }
+
+    let createAdvertisementDto: CreateAdvertisementDto;
+
+    try {
+      const parsedData = JSON.parse(createAdvertisementDtoString);
+
+      createAdvertisementDto = plainToInstance(
+        CreateAdvertisementDto,
+        parsedData,
+      );
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        throw new BadRequestException('Invalid JSON format');
+      } else {
+        throw error;
+      }
+    }
+
+    const errors = await validate(createAdvertisementDto);
+
+    if (errors.length > 0) {
+      throw new BadRequestException(buildErrorMessage(errors));
+    }
+
+    await this.createAdvertisementUseCase.execute(file, createAdvertisementDto);
   }
 
   @Put(':id')
+  @UseInterceptors(FileInterceptor('file'))
   async updateAdvertisement(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: /\/(jpg|jpeg|png)$/ })],
+        exceptionFactory: () => {
+          return new BadRequestException(
+            'File must be an image of type jpg, jpeg, or png',
+          );
+        },
+      }),
+    )
+    file: Express.Multer.File,
     @Param('id') advertisementId: string,
-    @Body() updateAdvertisementDto: UpdateAdvertisementDto,
+    @Body('updateAdvertisementDto')
+    updateAdvertisementDtoString: string,
   ) {
     const id = parseInt(advertisementId);
 
-    await this.updateAdvertisementUseCase.execute(updateAdvertisementDto, id);
+    if (!updateAdvertisementDtoString) {
+      throw new BadRequestException('Advertisement data is required');
+    }
+
+    let updateAdvertisementDto: CreateAdvertisementDto;
+
+    try {
+      const parsedData = JSON.parse(updateAdvertisementDtoString);
+
+      updateAdvertisementDto = plainToInstance(
+        UpdateAdvertisementDto,
+        parsedData,
+      );
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        throw new BadRequestException('Invalid JSON format');
+      } else {
+        throw error;
+      }
+    }
+
+    const errors = await validate(updateAdvertisementDto);
+
+    if (errors.length > 0) {
+      throw new BadRequestException(buildErrorMessage(errors));
+    }
+
+    await this.updateAdvertisementUseCase.execute(
+      file,
+      updateAdvertisementDto,
+      id,
+    );
   }
 
   @Delete(':id')

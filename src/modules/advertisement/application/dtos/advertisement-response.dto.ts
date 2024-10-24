@@ -18,6 +18,8 @@ export class AdvertisementResponseDto {
   numBedroom: number;
   numBathroom: number;
   hasPet: boolean;
+  isActive: boolean;
+  imgSrc: string;
   city: {
     id: number;
     name: string;

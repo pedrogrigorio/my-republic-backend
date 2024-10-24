@@ -1,9 +1,9 @@
 import { BedroomType } from '../enums/bedroomtype';
+import { Amenity } from './amenity';
 import { Gender } from '@src/core/enums/gender';
 import { State } from './state';
 import { Owner } from './owner';
 import { City } from './city';
-import { Amenity } from './amenity';
 import { Rule } from './rule';
 
 interface AdvertisementProps {
@@ -18,6 +18,8 @@ interface AdvertisementProps {
   numBedroom: number;
   numBathroom: number;
   hasPet: boolean;
+  isActive?: boolean;
+  imgSrc?: string;
   owner?: Owner;
   ownerId: number;
   city?: City;
@@ -127,6 +129,22 @@ export class Advertisement {
 
   public set hasPet(hasPet: boolean) {
     this.props.hasPet = hasPet;
+  }
+
+  public get isActive() {
+    return this.props.isActive;
+  }
+
+  public set isActive(isActive: boolean) {
+    this.props.isActive = isActive;
+  }
+
+  public get imgSrc() {
+    return this.props.imgSrc;
+  }
+
+  public set imgSrc(imgSrc: string) {
+    this.props.imgSrc = imgSrc;
   }
 
   public get owner() {

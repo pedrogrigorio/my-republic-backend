@@ -1,9 +1,9 @@
+import { PrismaAdvertisementMapper } from '../mappers/prisma-advertisement.mapper';
+import { AdvertisementSearchResult } from '../../domain/entities/advertisement-search-result';
 import { AdvertisementRepository } from '../../application/interfaces/advertisement.repository.interface';
 import { PrismaService } from '@src/core/services/prisma/prisma.service';
 import { Advertisement } from '../../domain/entities/advertisement';
-import { PrismaAdvertisementMapper } from '../mappers/prisma-advertisement.mapper';
 import { Injectable } from '@nestjs/common';
-import { AdvertisementSearchResult } from '../../domain/entities/advertisement-search-result';
 
 @Injectable()
 export class PrismaAdvertisementRepository implements AdvertisementRepository {
@@ -47,12 +47,12 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
       data: {
         ...data,
         amenities: {
-          connect: amenities.map((amenity) => ({
+          set: amenities.map((amenity) => ({
             id: amenity.id,
           })),
         },
         rules: {
-          connect: rules.map((rule) => ({
+          set: rules.map((rule) => ({
             id: rule.id,
           })),
         },

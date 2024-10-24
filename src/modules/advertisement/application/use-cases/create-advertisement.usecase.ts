@@ -4,6 +4,7 @@ import { CreateAdvertisementDto } from '../dtos/create-advertisement.dto';
 import { AdvertisementMapper } from '../mappers/advertisement.mapper';
 import { AmenityRepository } from '../interfaces/amenity.repository.interface';
 import { RuleRepository } from '../interfaces/rule.repository.interface';
+import { StorageService } from '@src/core/services/storage/storage.service.interface';
 import { Advertisement } from '../../domain/entities/advertisement';
 import { Injectable } from '@nestjs/common';
 
@@ -13,9 +14,11 @@ export class CreateAdvertisementUseCase {
     private advertisementRepository: AdvertisementRepository,
     private amenityRepository: AmenityRepository,
     private ruleRepository: RuleRepository,
+    private storageService: StorageService,
   ) {}
 
   async execute(
+    file: Express.Multer.File,
     createAdvertisementDto: CreateAdvertisementDto,
   ): Promise<AdvertisementResponseDto> {
     const ruleTags = Object.keys(createAdvertisementDto.rules).filter(
@@ -27,11 +30,12 @@ export class CreateAdvertisementUseCase {
     );
 
     const rules = await this.ruleRepository.findManyByTags(ruleTags);
-
     const amenities = await this.amenityRepository.findManyByTags(amenityTags);
+    const imgSrc = await this.storageService.upload(file);
 
     const advertisement = new Advertisement({
       ...createAdvertisementDto,
+      imgSrc,
       amenities,
       rules,
     });

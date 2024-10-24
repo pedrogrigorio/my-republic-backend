@@ -47,6 +47,8 @@ model Advertisement {
   numBedroom          Int     @map("num_bedroom")
   numBathroom         Int     @map("num_bathroom")
   hasPet              Boolean @map("has_pet")
+  isActive            Boolean @default(true) @map("is_active")
+  imgSrc              String? @map("img_src")
 
   ownerId Int   @map("owner_id")
   stateId Int   @map("state_id")
