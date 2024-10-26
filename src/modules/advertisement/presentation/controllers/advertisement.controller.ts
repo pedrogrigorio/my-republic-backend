@@ -112,7 +112,6 @@ export class AdvertisementController {
       throw new BadRequestException('Advertisement data is required');
     }
 
-    console.log(file);
     let createAdvertisementDto: CreateAdvertisementDto;
 
     try {
@@ -123,8 +122,6 @@ export class AdvertisementController {
         CreateAdvertisementDto,
         parsedData,
       );
-
-      console.log(createAdvertisementDto);
     } catch (error) {
       if (error instanceof SyntaxError) {
         throw new BadRequestException('Invalid JSON format');
