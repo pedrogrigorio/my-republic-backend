@@ -143,9 +143,12 @@ export class AdvertisementController {
   @UseInterceptors(FileInterceptor('file'))
   async updateAdvertisement(
     @CurrentUser() user: AuthUserDto,
+    @Param('id') advertisementId: string,
+    @Body('updateAdvertisementDto') updateAdvertisementDtoString: string,
     @UploadedFile(
       new ParseFilePipe({
         validators: [new FileTypeValidator({ fileType: /\/(jpg|jpeg|png)$/ })],
+        fileIsRequired: false,
         exceptionFactory: () => {
           return new BadRequestException(
             'File must be an image of type jpg, jpeg, or png',
@@ -154,9 +157,6 @@ export class AdvertisementController {
       }),
     )
     file: Express.Multer.File,
-    @Param('id') advertisementId: string,
-    @Body('updateAdvertisementDto')
-    updateAdvertisementDtoString: string,
   ) {
     const id = parseInt(advertisementId);
 
@@ -189,9 +189,9 @@ export class AdvertisementController {
     }
 
     await this.updateAdvertisementUseCase.execute(
-      file,
       updateAdvertisementDto,
       id,
+      file,
     );
   }
 

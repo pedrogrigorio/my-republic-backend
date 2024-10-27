@@ -19,9 +19,9 @@ export class UpdateAdvertisementUseCase {
   ) {}
 
   async execute(
-    file: Express.Multer.File,
     updateAdvertisementDto: UpdateAdvertisementDto,
     advertisementId: number,
+    file?: Express.Multer.File,
   ): Promise<AdvertisementResponseDto> {
     const existingAdvertisement =
       await this.advertisementRepository.findById(advertisementId);
@@ -43,11 +43,15 @@ export class UpdateAdvertisementUseCase {
     const rules = await this.ruleRepository.findManyByTags(ruleTags);
     const amenities = await this.amenityRepository.findManyByTags(amenityTags);
 
-    if (existingAdvertisement.imgSrc) {
-      await this.storageService.deleteFile(existingAdvertisement.imgSrc);
-    }
+    let imgSrc: string;
 
-    const imgSrc = await this.storageService.upload(file);
+    if (file) {
+      if (existingAdvertisement.imgSrc) {
+        await this.storageService.deleteFile(existingAdvertisement.imgSrc);
+      }
+
+      imgSrc = await this.storageService.upload(file);
+    }
 
     const advertisement = new Advertisement(
       {
