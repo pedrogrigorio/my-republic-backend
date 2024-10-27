@@ -159,7 +159,6 @@ export class AdvertisementController {
     file: Express.Multer.File,
   ) {
     const id = parseInt(advertisementId);
-
     if (!updateAdvertisementDtoString) {
       throw new BadRequestException('Advertisement data is required');
     }

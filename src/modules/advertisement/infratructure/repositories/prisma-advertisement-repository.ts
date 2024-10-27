@@ -40,7 +40,7 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
   }
 
   async update(advertisement: Advertisement): Promise<Advertisement> {
-    const { amenities, rules, ...data } =
+    const { amenities, rules, id, ...data } =
       PrismaAdvertisementMapper.toPrisma(advertisement);
 
     const updatedAd = await this.prisma.advertisement.update({
@@ -58,7 +58,7 @@ export class PrismaAdvertisementRepository implements AdvertisementRepository {
         },
       },
       where: {
-        id: advertisement.id,
+        id,
       },
       include: {
         owner: true,
