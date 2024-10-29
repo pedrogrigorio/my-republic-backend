@@ -31,6 +31,7 @@ import { PrismaService } from '@src/core/services/prisma/prisma.service';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { GetCitiesByStateIdUseCase } from './application/use-cases/get-cities-by-state-id.usecase';
+import { PauseAdvertisementUseCase } from './application/use-cases/pause-advertisement.usecase';
 
 @Module({
   imports: [HttpModule],
@@ -43,6 +44,7 @@ import { GetCitiesByStateIdUseCase } from './application/use-cases/get-cities-by
     DeleteAdvertisementUseCase,
     CreateAdvertisementUseCase,
     UpdateAdvertisementUseCase,
+    PauseAdvertisementUseCase,
     GetCitiesByStateIdUseCase,
     PopulateCitiesUseCase,
     PopulateStatesUseCase,

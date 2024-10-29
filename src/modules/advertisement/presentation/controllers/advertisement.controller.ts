@@ -28,7 +28,9 @@ import {
   Body,
   Put,
   Get,
+  Patch,
 } from '@nestjs/common';
+import { PauseAdvertisementUseCase } from '../../application/use-cases/pause-advertisement.usecase';
 
 @Controller('advertisements')
 export class AdvertisementController {
@@ -39,6 +41,7 @@ export class AdvertisementController {
     private deleteAdvertisementUseCase: DeleteAdvertisementUseCase,
     private createAdvertisementUseCase: CreateAdvertisementUseCase,
     private updateAdvertisementUseCase: UpdateAdvertisementUseCase,
+    private pauseAdvertisementUseCase: PauseAdvertisementUseCase,
     private getAdvertisementById: GetAdvertisementByIdUseCase,
   ) {}
 
@@ -192,6 +195,13 @@ export class AdvertisementController {
       id,
       file,
     );
+  }
+
+  @Patch('pause/:id')
+  async pauseAdvertisement(@Param('id') advertisementId: string) {
+    const id = parseInt(advertisementId);
+
+    await this.pauseAdvertisementUseCase.execute(id);
   }
 
   @Delete(':id')
