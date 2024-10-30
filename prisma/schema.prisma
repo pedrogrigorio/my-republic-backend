@@ -17,6 +17,7 @@ model User {
 
   advertisements Advertisement[]
   notifications  Notification[]
+  applications   Application[]
 
   @@map("users")
 }
@@ -57,10 +58,25 @@ model Advertisement {
   state   State @relation(fields: [stateId], references: [id])
   city    City  @relation(fields: [cityId], references: [id])
 
-  rules     Rule[]    @relation("AdvertisementRules")
-  amenities Amenity[] @relation("AdvertisementAmenities")
+  rules        Rule[]        @relation("AdvertisementRules")
+  amenities    Amenity[]     @relation("AdvertisementAmenities")
+  applications Application[]
 
   @@map("advertisements")
+}
+
+model Application {
+  id        Int      @id @default(autoincrement())
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  applicantId     Int            @map("applicant_id")
+  advertisementId Int            @map("advertisement_id")
+  advertisement   Advertisement? @relation(fields: [advertisementId], references: [id])
+  applicant       User?          @relation(fields: [applicantId], references: [id])
+
+  @@unique([applicantId, advertisementId])
+  @@map("applications")
 }
 
 model State {
