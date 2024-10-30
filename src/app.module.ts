@@ -7,11 +7,13 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
+import { ApplicationModule } from './modules/application/application.module';
 
 @Module({
   imports: [
     UserModule,
     AuthModule,
+    ApplicationModule,
     NotificationModule,
     AdvertisementModule,
     ConfigModule.forRoot({ isGlobal: true }),

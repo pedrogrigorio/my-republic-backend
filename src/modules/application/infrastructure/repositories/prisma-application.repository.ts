@@ -3,6 +3,7 @@ import { ApplicationRepository } from '../../application/interfaces/application.
 import { PrismaService } from '@src/core/services/prisma/prisma.service';
 import { Application } from '../../domain/entities/application';
 import { Injectable } from '@nestjs/common';
+import { ApplicationPage } from '../../domain/entities/application-page';
 
 @Injectable()
 export class PrismaApplicationRepository implements ApplicationRepository {
@@ -12,7 +13,10 @@ export class PrismaApplicationRepository implements ApplicationRepository {
     const rawApplication = PrismaApplicationMapper.toPrisma(application);
 
     await this.prisma.application.create({
-      data: rawApplication,
+      data: {
+        applicantId: rawApplication.applicantId,
+        advertisementId: rawApplication.advertisementId,
+      },
     });
   }
 
@@ -26,11 +30,32 @@ export class PrismaApplicationRepository implements ApplicationRepository {
     return applications.map((app) => PrismaApplicationMapper.toDomain(app));
   }
 
+  async findById(applicationId: any): Promise<Application> {
+    const application = await this.prisma.application.findUnique({
+      include: {
+        advertisement: true,
+      },
+      where: {
+        id: applicationId,
+      },
+    });
+
+    return PrismaApplicationMapper.toDomain(application);
+  }
+
   async findByUser(
     userId: number,
     page: number,
     pageSize: number,
-  ): Promise<Application[]> {
+  ): Promise<ApplicationPage> {
+    const skip = (page - 1) * pageSize;
+
+    const totalItems = await this.prisma.application.count({
+      where: {
+        applicantId: userId,
+      },
+    });
+
     const applications = await this.prisma.application.findMany({
       include: {
         advertisement: true,
@@ -38,9 +63,20 @@ export class PrismaApplicationRepository implements ApplicationRepository {
       where: {
         applicantId: userId,
       },
+      skip: skip,
+      take: pageSize,
     });
 
-    return applications.map((app) => PrismaApplicationMapper.toDomain(app));
+    const appsDto = applications.map((app) =>
+      PrismaApplicationMapper.toDomain(app),
+    );
+
+    const applicationPage = new ApplicationPage({
+      total: totalItems,
+      applications: appsDto,
+    });
+
+    return applicationPage;
   }
 
   async deleteById(applicationId: number): Promise<void> {
