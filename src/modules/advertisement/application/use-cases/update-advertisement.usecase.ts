@@ -53,12 +53,16 @@ export class UpdateAdvertisementUseCase {
       imgSrc = await this.storageService.upload(file);
     }
 
+    const isActive =
+      updateAdvertisementDto.totalSlots > updateAdvertisementDto.occupiedSlots;
+
     const advertisement = new Advertisement(
       {
         ...updateAdvertisementDto,
         rules,
         amenities,
         imgSrc,
+        isActive,
       },
       advertisementId,
     );

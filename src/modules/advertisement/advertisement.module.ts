@@ -33,9 +33,10 @@ import { Module } from '@nestjs/common';
 import { GetCitiesByStateIdUseCase } from './application/use-cases/get-cities-by-state-id.usecase';
 import { PauseAdvertisementUseCase } from './application/use-cases/pause-advertisement.usecase';
 import { IncrementOccupiedSlotsUseCase } from './application/use-cases/increment-occupied-slots.usecase';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
-  imports: [HttpModule],
+  imports: [HttpModule, NotificationModule],
   exports: [IncrementOccupiedSlotsUseCase],
   controllers: [AdvertisementController, StateController, CityController],
   providers: [
