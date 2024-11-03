@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { AdvertisementNotFoundException } from '@src/modules/advertisement/domain/exceptions/advertisement-not-found.exception';
 import { NotificationNotFoundException } from '@src/modules/notification/domain/exceptions/notification-not-found.exception';
+import { AdvertisementPausedException } from '@src/modules/application/domain/exceptions/advertisement-paused.exception';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -47,6 +48,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message = exception.message;
     } else if (exception instanceof NotificationNotFoundException) {
       status = HttpStatus.NOT_FOUND;
+      message = exception.message;
+    } else if (exception instanceof AdvertisementPausedException) {
+      status = HttpStatus.BAD_REQUEST;
       message = exception.message;
     } else if (exception instanceof HttpException) {
       status = exception.getStatus();

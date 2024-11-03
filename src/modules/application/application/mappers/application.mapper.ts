@@ -7,6 +7,7 @@ export class ApplicationMapper {
       id: application.id,
       status: application.status,
       createdAt: application.createdAt,
+      message: application.message,
       applicant: {
         id: application.applicant.id,
         name: application.applicant.name,
@@ -17,6 +18,7 @@ export class ApplicationMapper {
         title: application.advertisement.title,
         price: application.advertisement.price,
         imgSrc: application.advertisement.imgSrc,
+        isActive: application.advertisement.isActive,
         state: {
           uf: application.advertisement.state.uf,
         },

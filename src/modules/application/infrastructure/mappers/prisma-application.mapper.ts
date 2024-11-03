@@ -39,11 +39,13 @@ export class PrismaApplicationMapper {
     return new Application(
       {
         advertisementId: raw.advertisementId,
+        message: raw.message,
         advertisement: new Advertisement(
           {
             title: raw.advertisement.title,
             price: raw.advertisement.price,
             imgSrc: raw.advertisement.imgSrc,
+            isActive: raw.advertisement.isActive,
             city: new City({ name: raw.advertisement.city.name }),
             state: new State({ uf: raw.advertisement.state.uf }),
           },

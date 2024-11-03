@@ -32,13 +32,16 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { GetCitiesByStateIdUseCase } from './application/use-cases/get-cities-by-state-id.usecase';
 import { PauseAdvertisementUseCase } from './application/use-cases/pause-advertisement.usecase';
+import { IncrementOccupiedSlotsUseCase } from './application/use-cases/increment-occupied-slots.usecase';
 
 @Module({
   imports: [HttpModule],
+  exports: [IncrementOccupiedSlotsUseCase],
   controllers: [AdvertisementController, StateController, CityController],
   providers: [
     SearchAdvertisementsByCityUseCase,
     GetAdvertisementsByOwnerUseCase,
+    IncrementOccupiedSlotsUseCase,
     GetAllAdvertisementsUseCase,
     GetAdvertisementByIdUseCase,
     DeleteAdvertisementUseCase,

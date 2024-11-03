@@ -4,6 +4,7 @@ export class ApplicationResponseDto {
   id: number;
   status: ApplicationStatus;
   createdAt: Date;
+  message: string;
   applicant: {
     id: number;
     name: string;
@@ -14,6 +15,7 @@ export class ApplicationResponseDto {
     title: string;
     price: number;
     imgSrc: string;
+    isActive: boolean;
     city: {
       name: string;
     };

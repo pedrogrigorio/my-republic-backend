@@ -5,6 +5,7 @@ interface AdvertisementProps {
   title: string;
   price: number;
   imgSrc: string;
+  isActive: boolean;
   state: State;
   city: City;
 }
@@ -44,6 +45,14 @@ export class Advertisement {
 
   public set imgSrc(imgSrc: string) {
     this.props.imgSrc = imgSrc;
+  }
+
+  public get isActive() {
+    return this.props.isActive;
+  }
+
+  public set isActive(isActive: boolean) {
+    this.props.isActive = isActive;
   }
 
   public get city() {

@@ -21,6 +21,17 @@ export class PrismaApplicationRepository implements ApplicationRepository {
     });
   }
 
+  async update(application: Application): Promise<void> {
+    const rawApplication = PrismaApplicationMapper.toPrisma(application);
+
+    await this.prisma.application.update({
+      where: {
+        id: rawApplication.id,
+      },
+      data: rawApplication,
+    });
+  }
+
   async findAll(): Promise<Application[]> {
     const applications = await this.prisma.application.findMany({
       include: {
@@ -81,6 +92,50 @@ export class PrismaApplicationRepository implements ApplicationRepository {
       },
       where: {
         applicantId: userId,
+      },
+      skip: skip,
+      take: pageSize,
+    });
+
+    const appsDto = applications.map((app) =>
+      PrismaApplicationMapper.toDomain(app),
+    );
+
+    const applicationPage = new ApplicationPage({
+      total: totalItems,
+      applications: appsDto,
+    });
+
+    return applicationPage;
+  }
+
+  async findByAdvertisementId(
+    advertisementId: number,
+    page: number,
+    pageSize: number,
+  ): Promise<ApplicationPage> {
+    const skip = (page - 1) * pageSize;
+
+    const totalItems = await this.prisma.application.count({
+      where: {
+        advertisementId,
+        status: 'PENDING',
+      },
+    });
+
+    const applications = await this.prisma.application.findMany({
+      include: {
+        applicant: true,
+        advertisement: {
+          include: {
+            city: true,
+            state: true,
+          },
+        },
+      },
+      where: {
+        advertisementId,
+        status: 'PENDING',
       },
       skip: skip,
       take: pageSize,

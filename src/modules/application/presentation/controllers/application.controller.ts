@@ -1,11 +1,22 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { GetApplicationsByAdvertisementUseCase } from '../../application/use-cases/get-applications-by-advertisement.usecase';
 import { GetApplicationsByUserUseCase } from '../../application/use-cases/get-applications-by-user.usecase';
 import { GetAllApplicationsUseCase } from '../../application/use-cases/get-all-applications.usecase';
 import { DeleteApplicationUseCase } from '../../application/use-cases/delete-applications.usecase';
+import { RefuseApplicationUseCase } from '../../application/use-cases/refuse-application.usecase';
+import { AcceptApplicationUseCase } from '../../application/use-cases/accept-application.usecase';
 import { CreateApplicationDto } from '../../application/dtos/create-application.dto';
 import { ApplyUseCase } from '../../application/use-cases/apply.usecase';
 import { CurrentUser } from '@src/core/decorators/current-user.decorator';
 import { AuthUserDto } from '@src/modules/auth/application/dtos/auth-user.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 
 @Controller('applications')
 export class ApplicationController {
@@ -14,6 +25,9 @@ export class ApplicationController {
     private deleteApplicationUseCase: DeleteApplicationUseCase,
     private getAllApplicationsUseCase: GetAllApplicationsUseCase,
     private getApplicationsByUserUseCase: GetApplicationsByUserUseCase,
+    private getApplicationsByAdvertisementUseCase: GetApplicationsByAdvertisementUseCase,
+    private refuseApplicationUseCase: RefuseApplicationUseCase,
+    private acceptApplicationUseCase: AcceptApplicationUseCase,
   ) {}
 
   @Get()
@@ -26,6 +40,13 @@ export class ApplicationController {
     return await this.getApplicationsByUserUseCase.execute(user.id);
   }
 
+  @Get('get-by-ad/:id')
+  async getApplicationsByAdvertisement(@Param('id') advertisementId: string) {
+    const id = parseInt(advertisementId);
+
+    return await this.getApplicationsByAdvertisementUseCase.execute(id);
+  }
+
   @Post()
   async apply(
     @CurrentUser() user: AuthUserDto,
@@ -34,9 +55,23 @@ export class ApplicationController {
     return await this.applyUseCase.execute(user.id, createApplicationDto);
   }
 
+  @Patch(':id/refuse')
+  async refuseApplication(@Param('id') applicationId: string) {
+    const id = parseInt(applicationId);
+
+    return await this.refuseApplicationUseCase.execute(id);
+  }
+
+  @Patch(':id/accept')
+  async acceptApplication(@Param('id') applicationId: string) {
+    const id = parseInt(applicationId);
+
+    return await this.acceptApplicationUseCase.execute(id);
+  }
+
   @Delete(':id')
-  async deleteApplication(@Param('id') advertisementId: string) {
-    const id = parseInt(advertisementId);
+  async deleteApplication(@Param('id') applicationId: string) {
+    const id = parseInt(applicationId);
 
     await this.deleteApplicationUseCase.execute(id);
   }
