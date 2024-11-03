@@ -1,9 +1,12 @@
+import { State } from './state';
+import { City } from './city';
+
 interface AdvertisementProps {
   title: string;
   price: number;
   imgSrc: string;
-  cityName: string;
-  stateName: string;
+  state: State;
+  city: City;
 }
 
 export class Advertisement {
@@ -43,19 +46,19 @@ export class Advertisement {
     this.props.imgSrc = imgSrc;
   }
 
-  public get cityName() {
-    return this.props.cityName;
+  public get city() {
+    return this.props.city;
   }
 
-  public set cityName(cityName: string) {
-    this.props.cityName = cityName;
+  public set city(city: City) {
+    this.props.city = city;
   }
 
-  public get stateName() {
-    return this.props.stateName;
+  public get state() {
+    return this.props.state;
   }
 
-  public set stateName(stateName: string) {
-    this.props.stateName = stateName;
+  public set state(state: State) {
+    this.props.state = state;
   }
 }

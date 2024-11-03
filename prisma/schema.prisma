@@ -69,6 +69,7 @@ model Application {
   id        Int      @id @default(autoincrement())
   status    String   @default("PENDING")
   createdAt DateTime @default(now()) @map("created_at")
+  message   String?
 
   applicantId     Int            @map("applicant_id")
   advertisementId Int            @map("advertisement_id")

@@ -23,11 +23,7 @@ export class ApplicationController {
 
   @Get('get-by-user')
   async getApplicationsByUser(@CurrentUser() user: AuthUserDto) {
-    try {
-      return await this.getApplicationsByUserUseCase.execute(user.id);
-    } catch (error) {
-      console.log(error);
-    }
+    return await this.getApplicationsByUserUseCase.execute(user.id);
   }
 
   @Post()

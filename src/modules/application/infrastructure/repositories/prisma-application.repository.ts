@@ -16,6 +16,7 @@ export class PrismaApplicationRepository implements ApplicationRepository {
       data: {
         applicantId: rawApplication.applicantId,
         advertisementId: rawApplication.advertisementId,
+        message: rawApplication.message,
       },
     });
   }
@@ -23,7 +24,13 @@ export class PrismaApplicationRepository implements ApplicationRepository {
   async findAll(): Promise<Application[]> {
     const applications = await this.prisma.application.findMany({
       include: {
-        advertisement: true,
+        applicant: true,
+        advertisement: {
+          include: {
+            city: true,
+            state: true,
+          },
+        },
       },
     });
 
@@ -33,7 +40,13 @@ export class PrismaApplicationRepository implements ApplicationRepository {
   async findById(applicationId: any): Promise<Application> {
     const application = await this.prisma.application.findUnique({
       include: {
-        advertisement: true,
+        applicant: true,
+        advertisement: {
+          include: {
+            city: true,
+            state: true,
+          },
+        },
       },
       where: {
         id: applicationId,
@@ -58,7 +71,13 @@ export class PrismaApplicationRepository implements ApplicationRepository {
 
     const applications = await this.prisma.application.findMany({
       include: {
-        advertisement: true,
+        applicant: true,
+        advertisement: {
+          include: {
+            city: true,
+            state: true,
+          },
+        },
       },
       where: {
         applicantId: userId,

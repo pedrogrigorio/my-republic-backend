@@ -16,7 +16,7 @@ export class ApplyUseCase {
     userId: number,
     createApplicationDto: CreateApplicationDto,
   ): Promise<void> {
-    const { advertisementId } = createApplicationDto;
+    const { advertisementId, message } = createApplicationDto;
 
     const advertisement =
       await this.advertisementRepository.findById(advertisementId);
@@ -29,6 +29,7 @@ export class ApplyUseCase {
 
     const application = new Application({
       advertisementId,
+      message,
       applicantId: userId,
     });
 

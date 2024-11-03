@@ -1,9 +1,12 @@
 import { ApplicationStatus } from '../enums/application-status';
 import { Advertisement } from './advertisement';
+import { Applicant } from './applicant';
 
 interface ApplicationProps {
   status?: ApplicationStatus;
   createdAt?: Date;
+  message?: string;
+  applicant?: Applicant;
   applicantId: number;
   advertisementId: number;
   advertisement?: Advertisement;
@@ -36,6 +39,22 @@ export class Application {
 
   public set createdAt(createdAt: Date) {
     this.props.createdAt = createdAt;
+  }
+
+  public get message() {
+    return this.props.message;
+  }
+
+  public set message(message: string) {
+    this.props.message = message;
+  }
+
+  public get applicant() {
+    return this.props.applicant;
+  }
+
+  public set applicant(applicant: Applicant) {
+    this.props.applicant = applicant;
   }
 
   public get applicantId() {

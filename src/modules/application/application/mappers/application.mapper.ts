@@ -5,15 +5,24 @@ export class ApplicationMapper {
   static toDto(application: Application): ApplicationResponseDto {
     return {
       id: application.id,
-      applicantId: application.applicantId,
       status: application.status,
       createdAt: application.createdAt,
+      applicant: {
+        id: application.applicant.id,
+        name: application.applicant.name,
+        imgSrc: application.applicant.imgSrc,
+      },
       advertisement: {
+        id: application.advertisement.id,
         title: application.advertisement.title,
         price: application.advertisement.price,
         imgSrc: application.advertisement.imgSrc,
-        stateName: application.advertisement.stateName,
-        cityName: application.advertisement.cityName,
+        state: {
+          uf: application.advertisement.state.uf,
+        },
+        city: {
+          name: application.advertisement.city.name,
+        },
       },
     };
   }

@@ -4,12 +4,21 @@ export class ApplicationResponseDto {
   id: number;
   status: ApplicationStatus;
   createdAt: Date;
-  applicantId: number;
+  applicant: {
+    id: number;
+    name: string;
+    imgSrc: string;
+  };
   advertisement: {
+    id: number;
     title: string;
     price: number;
     imgSrc: string;
-    cityName: string;
-    stateName: string;
+    city: {
+      name: string;
+    };
+    state: {
+      uf: string;
+    };
   };
 }
