@@ -18,6 +18,7 @@ interface AdvertisementProps {
   numBedroom: number;
   numBathroom: number;
   hasPet: boolean;
+  phone: string;
   isActive?: boolean;
   imgSrc?: string;
   owner?: Owner;
@@ -129,6 +130,14 @@ export class Advertisement {
 
   public set hasPet(hasPet: boolean) {
     this.props.hasPet = hasPet;
+  }
+
+  public get phone() {
+    return this.props.phone;
+  }
+
+  public set phone(phone: string) {
+    this.props.phone = phone;
   }
 
   public get isActive() {

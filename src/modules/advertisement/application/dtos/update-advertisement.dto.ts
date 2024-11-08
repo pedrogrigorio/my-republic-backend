@@ -37,6 +37,8 @@ export class UpdateAdvertisementDto {
 
   stateId: number;
 
+  phone: string;
+
   @ValidateNested()
   @Type(() => AmenitiesDto)
   amenities: AmenitiesDto;

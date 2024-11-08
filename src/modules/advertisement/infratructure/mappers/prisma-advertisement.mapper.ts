@@ -45,6 +45,7 @@ export class PrismaAdvertisementMapper {
       hasPet: advertisement.hasPet,
       ownerId: advertisement.ownerId,
       cityId: advertisement.cityId,
+      phone: advertisement.phone,
       stateId: advertisement.stateId,
       isActive: advertisement.isActive,
       imgSrc: advertisement.imgSrc,
@@ -74,6 +75,7 @@ export class PrismaAdvertisementMapper {
         cityId: raw.cityId,
         stateId: raw.stateId,
         ownerId: raw.ownerId,
+        phone: raw.phone,
         city: new City(
           {
             name: raw.city.name,

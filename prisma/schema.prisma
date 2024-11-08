@@ -44,6 +44,7 @@ model Advertisement {
   allowOppositeGender Boolean @map("allow_opposite_gender")
   totalSlots          Int     @map("total_slots")
   occupiedSlots       Int     @map("occupied_slots")
+  phone               String
   bedroomType         String  @map("bedroom_type")
   numBedroom          Int     @map("num_bedroom")
   numBathroom         Int     @map("num_bathroom")

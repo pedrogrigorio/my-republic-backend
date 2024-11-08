@@ -50,6 +50,9 @@ export class CreateAdvertisementDto {
   @IsNotEmpty()
   stateId: number;
 
+  @IsNotEmpty()
+  phone: string;
+
   @ValidateNested()
   @Type(() => AmenitiesDto)
   amenities: AmenitiesDto;

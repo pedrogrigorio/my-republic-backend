@@ -16,6 +16,7 @@ export class AdvertisementMapper {
       numBathroom: advertisement.numBathroom,
       numBedroom: advertisement.numBedroom,
       hasPet: advertisement.hasPet,
+      phone: advertisement.phone,
       isActive: advertisement.isActive,
       imgSrc: advertisement.imgSrc,
       city: {
