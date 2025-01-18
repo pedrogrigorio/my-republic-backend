@@ -6,8 +6,6 @@ import { RefuseApplicationUseCase } from '../../application/use-cases/refuse-app
 import { AcceptApplicationUseCase } from '../../application/use-cases/accept-application.usecase';
 import { CreateApplicationDto } from '../../application/dtos/create-application.dto';
 import { ApplyUseCase } from '../../application/use-cases/apply.usecase';
-import { CurrentUser } from '@src/core/decorators/current-user.decorator';
-import { AuthUserDto } from '@src/modules/auth/application/dtos/auth-user.dto';
 import {
   Body,
   Controller,
@@ -17,6 +15,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { CurrentUserId } from '@src/core/decorators/current-user-id.decorator';
 
 @Controller('applications')
 export class ApplicationController {
@@ -36,8 +35,8 @@ export class ApplicationController {
   }
 
   @Get('get-by-user')
-  async getApplicationsByUser(@CurrentUser() user: AuthUserDto) {
-    return await this.getApplicationsByUserUseCase.execute(user.id);
+  async getApplicationsByUser(@CurrentUserId() userId: number) {
+    return await this.getApplicationsByUserUseCase.execute(userId);
   }
 
   @Get('get-by-ad/:id')
@@ -49,10 +48,10 @@ export class ApplicationController {
 
   @Post()
   async apply(
-    @CurrentUser() user: AuthUserDto,
+    @CurrentUserId() userId: number,
     @Body() createApplicationDto: CreateApplicationDto,
   ) {
-    return await this.applyUseCase.execute(user.id, createApplicationDto);
+    return await this.applyUseCase.execute(userId, createApplicationDto);
   }
 
   @Patch(':id/refuse')

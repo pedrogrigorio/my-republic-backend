@@ -10,8 +10,6 @@ import { UpdateAdvertisementDto } from '../../application/dtos/update-advertisem
 import { buildErrorMessage } from '@src/core/utils/build-error-message';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { plainToInstance } from 'class-transformer';
-import { CurrentUser } from '@src/core/decorators/current-user.decorator';
-import { AuthUserDto } from '@src/modules/auth/application/dtos/auth-user.dto';
 import { isPublic } from '@src/core/decorators/is-public.decorator';
 import { validate } from 'class-validator';
 import {
@@ -31,6 +29,7 @@ import {
   Patch,
 } from '@nestjs/common';
 import { PauseAdvertisementUseCase } from '../../application/use-cases/pause-advertisement.usecase';
+import { CurrentUserId } from '@src/core/decorators/current-user-id.decorator';
 
 @Controller('advertisements')
 export class AdvertisementController {
@@ -71,16 +70,15 @@ export class AdvertisementController {
 
   @Get('get-by-owner')
   async getAdvertisementByOwner(
-    @CurrentUser() user: AuthUserDto,
+    @CurrentUserId() userId: number,
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
   ) {
-    const { id } = user;
     const pageNumber = page ? parseInt(page) : 1;
     const pageSizeNumber = pageSize ? parseInt(pageSize) : 6;
 
     return await this.getAdvertisementsByOwnerUseCase.execute(
-      id,
+      userId,
       pageNumber,
       pageSizeNumber,
     );
@@ -97,7 +95,7 @@ export class AdvertisementController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async createAdvertisement(
-    @CurrentUser() user: AuthUserDto,
+    @CurrentUserId() userId: number,
     @UploadedFile(
       new ParseFilePipe({
         validators: [new FileTypeValidator({ fileType: /\/(jpg|jpeg|png)$/ })],
@@ -119,7 +117,7 @@ export class AdvertisementController {
 
     try {
       const parsedData = JSON.parse(createAdvertisementDtoString);
-      parsedData.ownerId = user.id;
+      parsedData.ownerId = userId;
 
       createAdvertisementDto = plainToInstance(
         CreateAdvertisementDto,
@@ -145,7 +143,7 @@ export class AdvertisementController {
   @Put(':id')
   @UseInterceptors(FileInterceptor('file'))
   async updateAdvertisement(
-    @CurrentUser() user: AuthUserDto,
+    @CurrentUserId() userId: number,
     @Param('id') advertisementId: string,
     @Body('updateAdvertisementDto') updateAdvertisementDtoString: string,
     @UploadedFile(
@@ -170,7 +168,7 @@ export class AdvertisementController {
 
     try {
       const parsedData = JSON.parse(updateAdvertisementDtoString);
-      parsedData.ownerId = user.id;
+      parsedData.ownerId = userId;
 
       updateAdvertisementDto = plainToInstance(
         UpdateAdvertisementDto,

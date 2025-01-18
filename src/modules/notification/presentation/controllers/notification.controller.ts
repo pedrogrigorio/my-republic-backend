@@ -6,8 +6,7 @@ import { CreateNotificationDto } from '../../application/dtos/create-notificatio
 import { GetUnreadCountUseCase } from '../../application/use-cases/get-unread-count.usecase';
 import { MarkAllAsReadUseCase } from '../../application/use-cases/mark-all-as-read.usecase';
 import { MarkAsReadUseCase } from '../../application/use-cases/mark-as-read.usecase';
-import { CurrentUser } from '@src/core/decorators/current-user.decorator';
-import { AuthUserDto } from '@src/modules/auth/application/dtos/auth-user.dto';
+import { CurrentUserId } from '@src/core/decorators/current-user-id.decorator';
 
 @Controller('notifications')
 export class NotificationController {
@@ -21,15 +20,13 @@ export class NotificationController {
   ) {}
 
   @Get()
-  async getAllNotifications(@CurrentUser() user: AuthUserDto) {
-    const { id } = user;
-
-    return this.getAllNotificationsUseCase.execute(id);
+  async getAllNotifications(@CurrentUserId() userId: number) {
+    return this.getAllNotificationsUseCase.execute(userId);
   }
 
   @Get('unread-count')
-  async getUnreadCount(@CurrentUser() user: AuthUserDto) {
-    return await this.getUnreadCountUseCase.execute(user.id);
+  async getUnreadCount(@CurrentUserId() userId: number) {
+    return await this.getUnreadCountUseCase.execute(userId);
   }
 
   @Get(':id')
@@ -54,7 +51,7 @@ export class NotificationController {
   }
 
   @Patch('read-all')
-  async markAllAsRead(@CurrentUser() user: AuthUserDto) {
-    await this.markAllAsReadUseCase.execute(user.id);
+  async markAllAsRead(@CurrentUserId() userId: number) {
+    await this.markAllAsReadUseCase.execute(userId);
   }
 }
