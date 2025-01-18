@@ -1,14 +1,14 @@
 import { AdvertisementNotFoundException } from '../../domain/exceptions/advertisement-not-found.exception';
-import { CreateNotificationUseCase } from '@src/modules/notification/application/use-cases/create-notification.usecase';
 import { AdvertisementRepository } from '../interfaces/advertisement.repository.interface';
-import { Injectable } from '@nestjs/common';
 import { NotificationType } from '@src/modules/notification/domain/enums/notification-type';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class IncrementOccupiedSlotsUseCase {
   constructor(
+    private eventEmitter: EventEmitter2,
     private advertisementRepository: AdvertisementRepository,
-    private createNotificationUseCase: CreateNotificationUseCase,
   ) {}
 
   async execute(advertisementId: number): Promise<void> {
@@ -26,10 +26,10 @@ export class IncrementOccupiedSlotsUseCase {
     if (advertisement.occupiedSlots === advertisement.totalSlots) {
       advertisement.isActive = false;
 
-      this.createNotificationUseCase.execute({
+      this.eventEmitter.emit('notification.create', {
         recipientId: advertisement.owner.id,
-        message: `Seu anúncio entitulado ${advertisement.title} foi pausado automaticamente devido a quantidade de vagas remanescentes.`,
         type: NotificationType.ADVERTISEMENT_PAUSED,
+        message: `Seu anúncio entitulado ${advertisement.title} foi pausado automaticamente devido a quantidade de vagas remanescentes.`,
       });
     }
 

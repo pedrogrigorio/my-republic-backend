@@ -1,11 +1,14 @@
 import { SearchAdvertisementsByCityUseCase } from './application/use-cases/search-advertisements-by-city';
 import { GetAdvertisementsByOwnerUseCase } from './application/use-cases/get-advertisements-by-owner.usecase';
 import { PrismaAdvertisementRepository } from './infratructure/repositories/prisma-advertisement-repository';
+import { IncrementOccupiedSlotsUseCase } from './application/use-cases/increment-occupied-slots.usecase';
 import { GetAdvertisementByIdUseCase } from './application/use-cases/get-advertisement-by-id.usecase';
 import { GetAllAdvertisementsUseCase } from './application/use-cases/get-all-advertisements.usecase';
 import { UpdateAdvertisementUseCase } from './application/use-cases/update-advertisement.usecase';
 import { CreateAdvertisementUseCase } from './application/use-cases/create-advertisement.usecase';
 import { DeleteAdvertisementUseCase } from './application/use-cases/delete-advertisement.usecase';
+import { PauseAdvertisementUseCase } from './application/use-cases/pause-advertisement.usecase';
+import { GetCitiesByStateIdUseCase } from './application/use-cases/get-cities-by-state-id.usecase';
 import { AdvertisementRepository } from './application/interfaces/advertisement.repository.interface';
 import { AdvertisementController } from './presentation/controllers/advertisement.controller';
 import { PrismaAmenityRepository } from './infratructure/repositories/prisma-amenity-repository';
@@ -30,13 +33,9 @@ import { LocaleService } from './application/interfaces/locale.service.interface
 import { PrismaService } from '@src/core/services/prisma/prisma.service';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { GetCitiesByStateIdUseCase } from './application/use-cases/get-cities-by-state-id.usecase';
-import { PauseAdvertisementUseCase } from './application/use-cases/pause-advertisement.usecase';
-import { IncrementOccupiedSlotsUseCase } from './application/use-cases/increment-occupied-slots.usecase';
-import { NotificationModule } from '../notification/notification.module';
 
 @Module({
-  imports: [HttpModule, NotificationModule],
+  imports: [HttpModule],
   exports: [IncrementOccupiedSlotsUseCase],
   controllers: [AdvertisementController, StateController, CityController],
   providers: [

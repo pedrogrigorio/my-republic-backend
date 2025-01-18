@@ -10,13 +10,12 @@ import { AdvertisementRepository } from '../advertisement/application/interfaces
 import { ApplicationRepository } from './application/interfaces/application.repository.interface';
 import { ApplicationController } from './presentation/controllers/application.controller';
 import { AdvertisementModule } from '../advertisement/advertisement.module';
-import { NotificationModule } from '../notification/notification.module';
 import { PrismaService } from '@src/core/services/prisma/prisma.service';
 import { ApplyUseCase } from './application/use-cases/apply.usecase';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [NotificationModule, AdvertisementModule],
+  imports: [AdvertisementModule],
   controllers: [ApplicationController],
   providers: [
     ApplyUseCase,

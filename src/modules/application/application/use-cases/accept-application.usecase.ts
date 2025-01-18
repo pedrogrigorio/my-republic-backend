@@ -1,17 +1,17 @@
-import { CreateNotificationUseCase } from '@src/modules/notification/application/use-cases/create-notification.usecase';
-import { ApplicationStatus } from '../../domain/enums/application-status';
-import { ApplicationNotFoundException } from '../../domain/exceptions/application-not-found.exception';
-import { ApplicationRepository } from '../interfaces/application.repository.interface';
-import { Injectable } from '@nestjs/common';
-import { NotificationType } from '@src/modules/notification/domain/enums/notification-type';
 import { IncrementOccupiedSlotsUseCase } from '@src/modules/advertisement/application/use-cases/increment-occupied-slots.usecase';
+import { ApplicationNotFoundException } from '../../domain/exceptions/application-not-found.exception';
 import { AdvertisementPausedException } from '../../domain/exceptions/advertisement-paused.exception';
+import { ApplicationRepository } from '../interfaces/application.repository.interface';
+import { ApplicationStatus } from '../../domain/enums/application-status';
+import { NotificationType } from '@src/modules/notification/domain/enums/notification-type';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AcceptApplicationUseCase {
   constructor(
+    private eventEmitter: EventEmitter2,
     private applicationRepository: ApplicationRepository,
-    private createNotificationUseCase: CreateNotificationUseCase,
     private incrementOccupiedSlotsUseCase: IncrementOccupiedSlotsUseCase,
   ) {}
 
@@ -31,7 +31,7 @@ export class AcceptApplicationUseCase {
 
     application.status = ApplicationStatus.ACCEPTED;
 
-    await this.createNotificationUseCase.execute({
+    this.eventEmitter.emit('notification.create', {
       type: NotificationType.APPLICATION_ACCEPTED,
       recipientId: application.applicantId,
       message: `Você foi aceito na república ${application.advertisement.title}`,

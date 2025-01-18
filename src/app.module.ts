@@ -8,6 +8,7 @@ import { UserModule } from './modules/user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { ApplicationModule } from './modules/application/application.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ApplicationModule } from './modules/application/application.module';
     ApplicationModule,
     NotificationModule,
     AdvertisementModule,
+    EventEmitterModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppControler],
